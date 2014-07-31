@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Start of Compiling"
+javac -cp . com/exist/employeeInfoPackage/*.java com/exist/addViewPackage/*.java com/exist/editDeletePackage/*.java com/exist/employeeRegistrationMenu/*.java
+echo "End of Compiling"
+
+echo "Create Jar File"
+jar cvfm EmployeeRegistration.jar Manifest.txt com/exist/editDeletePackage/*.class com/exist/employeeInfoPackage/*.class com/exist/addViewPackage/*.class com/exist/employeeRegistrationMenu/*.class
+echo "Successfully Created Jar File"
+
+#github repo: https://github.com/jcrispo/employee-reg.git
+
