@@ -21,11 +21,7 @@ import java.text.DateFormat;
 
 public class EmployeeRegistration extends EmployeeData{
     private static EmployeeRegMenu userChoice;
-    private static AddEmployeeData addData;
     private static ViewEmployeeData viewData;
-    private static EditEmployeeData editData;
-    private static DeleteEmployeeData deleteData;
-    private static EmployeeDataValidation validate;
     private static Map<Integer, EmployeeData> employeeDatabase;
     private static Map<String, Integer> sortKeyID;
     private static List<String> sortKeyString;
@@ -40,11 +36,7 @@ public class EmployeeRegistration extends EmployeeData{
     private static final String BLANKINPUT = "b";
 
     public EmployeeRegistration(){
-        addData = new AddEmployeeData();
         viewData = new ViewEmployeeData();
-        editData = new EditEmployeeData();
-        deleteData = new DeleteEmployeeData();
-        validate = new EmployeeDataValidation();
         employeeDatabase = new HashMap<Integer, EmployeeData>();
         sortKeyID = new HashMap<String, Integer>();
         sortKeyString = new ArrayList<String>();
