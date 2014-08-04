@@ -1,0 +1,4 @@
+#!/bin/bash
+echo
+echo "Executable Jar file named STANDALONE-EmployeeRegistration-1.0.jar will be located in employeeRegistrationMenu/target/"
+java -cp . -jar "employeeRegistrationMenu/target/STANDALONE-EmployeeRegistration-1.0.jar"
