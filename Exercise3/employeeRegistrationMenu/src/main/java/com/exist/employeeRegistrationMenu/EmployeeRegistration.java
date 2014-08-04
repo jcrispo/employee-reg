@@ -1,8 +1,6 @@
 package com.exist.employeeRegistrationMenu;
 
 import com.exist.employeeRegistrationMenu.EmployeeRegMenu;
-import com.exist.employeeRegistrationMenu.Register;
-import com.exist.employeeRegistrationMenu.InvalidMenuChoice;
 import com.exist.employeeRegistrationMenu.MenuFactory;
 import com.exist.employeeInfoPackage.EmployeeData;
 import com.exist.addViewPackage.ViewEmployeeData;
