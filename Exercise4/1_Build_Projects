@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Compile and package using Maven"
+mvn clean package
+

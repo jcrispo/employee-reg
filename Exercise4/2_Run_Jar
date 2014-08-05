@@ -1,0 +1,5 @@
+#!/bin/bash
+echo
+echo "Executable JAR file named EmployeeRegistration-1.0.jar located in ./employeeRegistrationMenu/target/"
+echo "Executable JAR requires the following JARs: employeeInfoPackage-1.0-SNAPSHOT.jar, addViewPackage-1.0-SNAPSHOT.jar, editDeletePackage-1.0-SNAPSHOT.jar to run."
+java -cp . -jar "employeeRegistrationMenu/target/EmployeeRegistration-1.0.jar"
