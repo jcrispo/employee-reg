@@ -45,7 +45,7 @@ public class EditMenu1_Edit extends EditMenu1 {
                 view.setInvalidSearchToDefault();
                 exitEditMenu = true;
             } else {
-                System.out.print("\nChoose Field to Edit: (1) First Name, (2) Middle Name, (3) Last Name, (4) Gender, (5) Birth Date, (6) Position, (7) Hire Date, (8) Cancel : ");
+                System.out.print("\nChoose Field to Edit: (1) First Name, (2) Middle Name, (3) Last Name, (4) Gender, (5) Birth Date, (6) Hire Date, (7) Position, (8) Cancel : ");
                 userChoice = (userInput.nextLine()).trim();
                 menu = Edit_Options.choice(userChoice);
                 menu.execute(userChoice, employeeNumberInput);
