@@ -10,7 +10,8 @@ public abstract class Edit_Options extends EditMenu {
     private static final int BIRTHDATE = 5;
     private static final int HIREDATE = 6;
     private static final int POSITION = 7;
-    private static final int EXIT = 8;
+    private static final int SALARY = 8;
+    private static final int EXIT = 9;
     private static final int BLANK = 0;
 
     public static EditMenu choice (String userInput) {
@@ -33,6 +34,8 @@ public abstract class Edit_Options extends EditMenu {
             return new Edit_HireDate();
         } else if (userNumberInput == POSITION) {
             return new Edit_Position();
+        } else if (userNumberInput == SALARY) {
+            return new Edit_Salary();
         } else if (userNumberInput == EXIT) {
             return new Edit_Exit();
         } else {
