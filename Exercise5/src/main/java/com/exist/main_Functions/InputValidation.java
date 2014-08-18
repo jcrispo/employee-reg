@@ -1,7 +1,17 @@
 package com.exist.main_Functions;
 
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+
 public class InputValidation {
+    private SimpleDateFormat dateFormat;
     private static final String INVALID = "\nInvalid Input! ";
+    private static final Integer LOWEST_VALID_YEAR = 1000;
+    private static final Calendar currentDate = Calendar.getInstance();
+
+    public InputValidation () {
+        dateFormat = new SimpleDateFormat("YYYY-MM-dd");
+    }
 
     public static boolean stringIsNull (String input) {
         if ((input.trim()).length() == 0) {
