@@ -57,13 +57,4 @@ public class InputValidation {
         }
     }
 
-    public boolean dateFormatIsValid (String date) {
-        try {
-            dateFormat.parse(date);
-            return true;            
-        } catch (ParseException e) {
-            System.out.println("The date you provided is not valid.");
-            return false;
-        }
-    }
 }
