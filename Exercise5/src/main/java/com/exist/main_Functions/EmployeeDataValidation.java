@@ -51,6 +51,7 @@ public class EmployeeDataValidation {
                 System.out.println("Date input is not valid");
             } 
         }
+        inputIsValid = false;
         return dateFormat.format(date.getTime());
     }
 
