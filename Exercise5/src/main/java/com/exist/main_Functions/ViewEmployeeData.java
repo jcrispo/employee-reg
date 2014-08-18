@@ -60,10 +60,10 @@ public class ViewEmployeeData {
     public void showData (String query) {
         data = companyDatabase.getData(query);
         try {
-            if (!data.isBeforeFirst()){
-                invalidSearchParameter = true;
-            } else {
                 System.out.format(NXTLINE + COMPLETEDISPLAYFORMAT + NXTLINE, ID, FNAME, MNAME, LNAME, GENDER, BIRTHDATE, HIREDATE, POSITION, DEPARTMENT, SALARY, EMAIL);
+            if (!data.isBeforeFirst()){
+                System.out.println("\nNo Result Found!");
+                invalidSearchParameter = true;
             }
             while (data.next()) {
                 String employeeId  = data.getString("personalInfo.employeeId");
