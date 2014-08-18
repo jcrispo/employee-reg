@@ -29,6 +29,7 @@ public class Database {
         try {
             dbConnection = DriverManager.getConnection(databaseURL, databaseUser, databasePassword);
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -40,6 +41,7 @@ public class Database {
             result = sqlStatement.executeQuery(sql);
         } catch (SQLException e) {
             System.out.println("Error getting data from Database!");
+            e.printStackTrace();
         }
         return result;
     }
@@ -49,6 +51,7 @@ public class Database {
             updateStatement = dbConnection.prepareStatement(sql);
         } catch (SQLException e) {
             System.out.println("Error in Prepared Statement!");
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -59,6 +62,7 @@ public class Database {
             updateStatement.setString(fieldNumber, stringData);
         } catch (SQLException e) {
             System.out.println("Error inserting data into Database!");
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -68,8 +72,7 @@ public class Database {
         try {
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error in adding data into Database!");
-			System.out.println(e);//delete
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -91,6 +94,7 @@ public class Database {
             }
         } catch (SQLException e) {
             System.out.println("Error closing Database!");
+            e.printStackTrace();
             return false;
         }
         return true;

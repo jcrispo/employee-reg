@@ -37,7 +37,6 @@ public class AddData {
         companyDatabase.insertIntoDatabase(5, validate.dateString("Birth Date: "));
         companyDatabase.updateDatabase();
         companyDatabase.closeDatabase();
-
     }
 
     public void addEmployeeCompanyData () {
