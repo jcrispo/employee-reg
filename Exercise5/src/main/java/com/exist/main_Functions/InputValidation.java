@@ -2,6 +2,7 @@ package com.exist.main_Functions;
 
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class InputValidation {
     private SimpleDateFormat dateFormat;
@@ -56,4 +57,13 @@ public class InputValidation {
         }
     }
 
+    public boolean dateFormatIsValid (String date) {
+        try {
+            dateFormat.parse(date);
+            return true;            
+        } catch (ParseException e) {
+            System.out.println("The date you provided is not valid.");
+            return false;
+        }
+    }
 }
