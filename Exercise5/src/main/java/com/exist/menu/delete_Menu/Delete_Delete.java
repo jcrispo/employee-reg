@@ -24,6 +24,7 @@ public class Delete_Delete extends Delete_Menu {
     }
 
     public void execute (String employeeNumber) {
+        companyDatabase.loginDatabase();
         view.showData(view.getAllDataQueryStatement() + condition + employeeNumber + ";");
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
