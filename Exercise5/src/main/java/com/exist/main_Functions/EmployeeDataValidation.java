@@ -1,9 +1,11 @@
 package com.exist.main_Functions;
 
 import java.util.Scanner;
-import java.util.Calendar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 import static java.util.Calendar.YEAR;
@@ -13,12 +15,12 @@ import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MINUTE;
 
 public class EmployeeDataValidation {
-    private static Calendar date = new GregorianCalendar();
-    private static SimpleDateFormat dateFormat;
-    private static InputValidation validate;
-    private static Database companyDatabase;
-    private static ViewEmployeeData view;
-    private static Scanner userInput;
+    private SimpleDateFormat dateFormat;
+    private InputValidation validate;
+    private Database companyDatabase;
+    private ViewEmployeeData view;
+    private Scanner userInput;
+    private static Calendar date;
     private static ResultSet data;
     private static boolean inputIsValid;
     private static String tempString;
@@ -36,123 +38,35 @@ public class EmployeeDataValidation {
     private static final int NOVEMBER = 11;
     private static final int DECEMBER = 12;
     private static final int LIMIT = 25;
-    private static final Integer LOWEST_VALID_YEAR = 1000;
     private static final String INVALID = "\nInvalid Input!";
     private static final String DAY_INPUT_INVALID = "\nInput Invalid. Value may be exceeding the number of Days in this given Month or is less than 1.\nPlease try Again\n";
 
-
-
     public EmployeeDataValidation () {
-        dateFormat = new SimpleDateFormat("YYYY/MM/dd");
+        dateFormat = new SimpleDateFormat("YYYY-MM-dd");
         validate = new InputValidation();
         companyDatabase = new Database();
         userInput = new Scanner(System.in);
         view = new ViewEmployeeData();
+        date = new GregorianCalendar();
         inputIsValid = false;
         data = null;
     }
 
     public String dateString (String print) {
         EmployeeDataValidation mainClass = new EmployeeDataValidation();
-        System.out.println("Input " + print);
-        mainClass.validYear();            
-        mainClass.validMonth();
-        mainClass.validDay();        
+        while (!inputIsValid) {
+            System.out.print("Input " + print + "in 'YYYY-MM-DD' format: ");
+            tempString = userInput.nextLine().trim();
+            dateFormat.setLenient(false);
+            try {
+                date.setTime(dateFormat.parse(tempString));
+                inputIsValid = true;            
+            } catch (ParseException e) {
+                System.out.println("The date you provided is not valid.");
+            } 
+        }       
         inputIsValid = false;
         return dateFormat.format(date.getTime());
-    }
-
-    private void validYear () {
-        while (!inputIsValid) {
-            System.out.print("\tYear (YYYY): ");
-            tempString = userInput.nextLine().trim();
-            inputIsValid = validate.containsOnlyNumbers(tempString);
-            if (!inputIsValid) {
-                continue;
-            }
-            if ((Integer.valueOf(tempString) < LOWEST_VALID_YEAR) || (Integer.valueOf(tempString) > currentDate.get(Calendar.YEAR))) {
-                System.out.println("\nInvalid Data. Please follow the format 'YYYY'. Input value shouldn't exceed the current Year: \n");
-                inputIsValid = false;
-            } else {
-                date.set(YEAR, Integer.valueOf(tempString)); 
-                inputIsValid = true;
-            }
-        }
-        inputIsValid = false;
-    }
-
-    private void validMonth () {
-        while (!inputIsValid) {
-            System.out.print("\tMonth (1-12): ");
-            tempString = userInput.nextLine().trim();
-            inputIsValid = validate.containsOnlyNumbers(tempString);
-            if (!inputIsValid) {
-                continue;
-            }
-            if ((Integer.valueOf(tempString) < 1) || (Integer.valueOf(tempString) > 12)) {
-                System.out.println("\nInvalid Data. Please choose between 1 (Jan.) - 12 (Dec.): \n");
-                inputIsValid = false;
-            } else {
-                date.set(MONTH, Integer.valueOf(tempString)-1); 
-                inputIsValid = true;
-            }
-        }
-        inputIsValid = false;
-    }
-
-    private void validDay () {
-        while (!inputIsValid) {
-            System.out.print("\tDay: ");
-            tempString = userInput.nextLine().trim();
-            inputIsValid = validate.containsOnlyNumbers(tempString);
-            if (!inputIsValid) {
-                continue;
-            }
-            switch(date.get(MONTH)){
-                case JANUARY:
-                case MARCH:
-                case MAY:
-                case JULY:
-                case AUGUST:
-                case OCTOBER:
-                case DECEMBER:
-                    if (Integer.valueOf(tempString) > 31 || (Integer.valueOf(tempString) < 1)) {
-                        System.out.println(DAY_INPUT_INVALID);
-                        inputIsValid = false;
-                    } else {
-                        date.set(DATE, Integer.valueOf(tempString));
-                        inputIsValid = true;
-                    }
-                    break;
-                case APRIL:
-                case JUNE:
-                case SEPTEMBER:
-                case NOVEMBER:
-                    if (Integer.valueOf(tempString) > 30 || (Integer.valueOf(tempString) < 1)) {
-                        System.out.println(DAY_INPUT_INVALID);
-                        inputIsValid = false;
-                    } else {
-                        date.set(DATE, Integer.valueOf(tempString));
-                        inputIsValid = true;
-                    }
-                    break;
-                case FEBRUARY:
-                    if ((date.get(YEAR)%4 == 0) && (Integer.valueOf(tempString) > 29 || (Integer.valueOf(tempString) < 1))) {
-                        System.out.println(DAY_INPUT_INVALID);
-                        inputIsValid = false;
-                    } else if (Integer.valueOf(tempString) > 28 || (Integer.valueOf(tempString) < 1)) {
-                        System.out.println(DAY_INPUT_INVALID);
-                        inputIsValid = false;
-                    }else {
-                        date.set(DATE, Integer.valueOf(tempString));
-                        inputIsValid = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        inputIsValid = false;
     }
 
     public String name (String print) {
