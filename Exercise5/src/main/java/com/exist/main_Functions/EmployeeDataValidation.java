@@ -8,11 +8,6 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
-import static java.util.Calendar.YEAR;
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.DATE;
-import static java.util.Calendar.HOUR_OF_DAY;
-import static java.util.Calendar.MINUTE;
 
 public class EmployeeDataValidation {
     private SimpleDateFormat dateFormat;
@@ -25,24 +20,11 @@ public class EmployeeDataValidation {
     private static boolean inputIsValid;
     private static String tempString;
     private static final Calendar currentDate = Calendar.getInstance();
-    private static final int JANUARY = 1;
-    private static final int FEBRUARY = 2;
-    private static final int MARCH = 3;
-    private static final int APRIL = 4;
-    private static final int MAY = 5;
-    private static final int JUNE = 6;
-    private static final int JULY = 7;
-    private static final int AUGUST = 8;
-    private static final int SEPTEMBER = 9;
-    private static final int OCTOBER = 10;
-    private static final int NOVEMBER = 11;
-    private static final int DECEMBER = 12;
     private static final int LIMIT = 25;
     private static final String INVALID = "\nInvalid Input!";
-    private static final String DAY_INPUT_INVALID = "\nInput Invalid. Value may be exceeding the number of Days in this given Month or is less than 1.\nPlease try Again\n";
 
     public EmployeeDataValidation () {
-        dateFormat = new SimpleDateFormat("YYYY-MM-dd");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         validate = new InputValidation();
         companyDatabase = new Database();
         userInput = new Scanner(System.in);
@@ -53,19 +35,22 @@ public class EmployeeDataValidation {
     }
 
     public String dateString (String print) {
-        EmployeeDataValidation mainClass = new EmployeeDataValidation();
+        tempString = null;
+        dateFormat.setLenient(false);
         while (!inputIsValid) {
-            System.out.print("Input " + print + "in 'YYYY-MM-DD' format: ");
-            tempString = userInput.nextLine().trim();
-            dateFormat.setLenient(false);
+        System.out.print(print + " in YYYY-MM-DD format: ");
+        tempString = userInput.nextLine().trim();
             try {
                 date.setTime(dateFormat.parse(tempString));
-                inputIsValid = true;            
+                if (validate.dayIsValid(date) && validate.monthIsValid(date) && validate.yearIsValid(date)) {
+                inputIsValid = true; 
+                } else {
+                inputIsValid = false; 
+                }
             } catch (ParseException e) {
-                System.out.println("The date you provided is not valid.");
+                System.out.println("Date input is not valid");
             } 
-        }       
-        inputIsValid = false;
+        }
         return dateFormat.format(date.getTime());
     }
 
