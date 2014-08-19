@@ -54,6 +54,10 @@ public class ViewEmployeeData {
         }
         companyDatabase.loginDatabase();
         view.showData(ALLDATAQUERY + sort.parameter());
+        if (invalidSearchParameter = true) {
+            System.out.println("Database is Empty!");
+        }
+        view.setInvalidSearchToDefault();
         companyDatabase.closeDatabase();
     }
 
