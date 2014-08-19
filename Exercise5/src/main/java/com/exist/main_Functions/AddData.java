@@ -3,10 +3,11 @@ package com.exist.main_Functions;
 import java.util.Scanner;
 
 public class AddData {
-    private static Database companyDatabase;
-    private static EmployeeDataValidation validate;
-    private static ViewEmployeeData view;
-    private static InputValidation validation;
+    private Database companyDatabase;
+    private EmployeeDataValidation validate;
+    private ViewEmployeeData view;
+    private InputValidation validation;
+    private EmployeeData employee;
     private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
     private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
     private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
@@ -24,32 +25,40 @@ public class AddData {
         validation = new InputValidation();
         validate = new EmployeeDataValidation();
         view = new ViewEmployeeData();
+        employee = new EmployeeData();
     }
 
     public void addEmployeePersonalData () {
-        companyDatabase.loginDatabase();
         System.out.println("Register");
+        employee.setFirstName(validate.name("First Name: "));
+        employee.setMiddleName(validate.name("Middle Name: "));
+        employee.setLastName(validate.name("Last Name: "));
+        employee.setGender(validate.gender("Gender m/f: "));
+        employee.setBirthDate(validate.dateString("Birth Date: "));
+        employee.setHireDate(validate.dateString("Hire Date: "));
+        view.showPositions(QUERY_POSITIONS);
+        System.out.println("Enter only the Position ID.");
+        employee.setPosition(Integer.valueOf(validate.numericDataExists("Position: ", QUERY_POSITION_DATA + POS_NUM_CONDITION)));
+        employee.setSalary(Integer.valueOf(validate.number("Salary: ")));
+        employee.setEmail(validate.email("E-Mail Address: "));
+        companyDatabase.loginDatabase();
         companyDatabase.insertStatement(sqlStatement1);
-        companyDatabase.insertIntoDatabase(1, validate.name("First Name: "));
-        companyDatabase.insertIntoDatabase(2, validate.name("Middle Name: "));
-        companyDatabase.insertIntoDatabase(3, validate.name("Last Name: "));
-        companyDatabase.insertIntoDatabase(4, validate.gender("Gender 'm'/'f': "));
-        companyDatabase.insertIntoDatabase(5, validate.dateString("Birth Date: "));
+        companyDatabase.insertIntoDatabase(1, employee.getFirstName());
+        companyDatabase.insertIntoDatabase(2, employee.getMiddleName());
+        companyDatabase.insertIntoDatabase(3, employee.getLastName());
+        companyDatabase.insertIntoDatabase(4, employee.getGender());
+        companyDatabase.insertIntoDatabase(5, employee.getBirthDate());
+        companyDatabase.updateDatabase();
+        companyDatabase.insertStatement(sqlStatement2);
+        companyDatabase.insertIntoDatabase(1, employee.getPosition().toString());
+        companyDatabase.insertIntoDatabase(2, employee.getHireDate());
+        companyDatabase.insertIntoDatabase(3, employee.getSalary().toString());
+        companyDatabase.insertIntoDatabase(4, employee.getEmail());
         companyDatabase.updateDatabase();
         companyDatabase.closeDatabase();
     }
 
     public void addEmployeeCompanyData () {
-        companyDatabase.loginDatabase();
-        companyDatabase.insertStatement(sqlStatement2);
-        view.showPositions(QUERY_POSITIONS);
-        System.out.println("Enter only the Position ID.");
-        companyDatabase.insertIntoDatabase(1, validate.numericDataExists("Position: ", QUERY_POSITION_DATA + POS_NUM_CONDITION ));
-        companyDatabase.insertIntoDatabase(2, validate.dateString("Hire Date: "));
-        companyDatabase.insertIntoDatabase(3, validate.number("Salary: "));
-        companyDatabase.insertIntoDatabase(4, validate.email("E-Mail Address: "));
-        companyDatabase.updateDatabase();
-        companyDatabase.closeDatabase();
     }
 
     public void addNewDepartment () {

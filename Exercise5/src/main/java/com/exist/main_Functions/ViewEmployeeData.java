@@ -94,7 +94,7 @@ public class ViewEmployeeData {
     }
 
     public void showPositions (String query) {
-        //companyDatabase.loginDatabase();
+        companyDatabase.loginDatabase();
         data = companyDatabase.getData(query);
         try {
            if (!data.isBeforeFirst()){
@@ -113,7 +113,7 @@ public class ViewEmployeeData {
         } catch (SQLException e) {
             System.out.println("Error retrieving data from Company Database");
         }
-        //companyDatabase.closeDatabase();
+        companyDatabase.closeDatabase();
     }
 
     public void showDepartments (String query) {

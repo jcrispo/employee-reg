@@ -21,7 +21,6 @@ public class Register extends EmployeeRegistrationMenu {
             exit = true;
             if (userInput.equals("1")) {
                 register.addEmployeePersonalData();
-                register.addEmployeeCompanyData();
             } else if (userInput.equals("2")) {
                 register.addNewPosition();
             } else if (userInput.equals("3")){

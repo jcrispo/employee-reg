@@ -92,6 +92,7 @@ public class EmployeeDataValidation {
             System.out.print(print);
             tempString = userInput.nextLine().trim();
             if (validate.containsOnlyNumbers(tempString)) {    
+                companyDatabase.loginDatabase();
                 data = companyDatabase.getData(query + tempString); 
                 try {
                     dataExists = data.isBeforeFirst();
@@ -101,6 +102,7 @@ public class EmployeeDataValidation {
                 if (!dataExists){
                     System.out.println("ID number does not exist. Try again");
                 }
+                companyDatabase.closeDatabase();
             }
         }
         return tempString;
