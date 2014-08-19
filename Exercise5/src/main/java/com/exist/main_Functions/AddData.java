@@ -8,6 +8,7 @@ public class AddData {
     private ViewEmployeeData view;
     private InputValidation validation;
     private EmployeeData employee;
+    private Insert toDatabase;
     private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
     private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
     private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
@@ -26,6 +27,7 @@ public class AddData {
         validate = new EmployeeDataValidation();
         view = new ViewEmployeeData();
         employee = new EmployeeData();
+        toDatabase = new Insert();
     }
 
     public void addEmployeePersonalData () {
@@ -41,21 +43,7 @@ public class AddData {
         employee.setPosition(Integer.valueOf(validate.numericDataExists("Position: ", QUERY_POSITION_DATA + POS_NUM_CONDITION)));
         employee.setSalary(Integer.valueOf(validate.number("Salary: ")));
         employee.setEmail(validate.email("E-Mail Address: "));
-        companyDatabase.loginDatabase();
-        companyDatabase.insertStatement(sqlStatement1);
-        companyDatabase.insertIntoDatabase(1, employee.getFirstName());
-        companyDatabase.insertIntoDatabase(2, employee.getMiddleName());
-        companyDatabase.insertIntoDatabase(3, employee.getLastName());
-        companyDatabase.insertIntoDatabase(4, employee.getGender());
-        companyDatabase.insertIntoDatabase(5, employee.getBirthDate());
-        companyDatabase.updateDatabase();
-        companyDatabase.insertStatement(sqlStatement2);
-        companyDatabase.insertIntoDatabase(1, employee.getPosition().toString());
-        companyDatabase.insertIntoDatabase(2, employee.getHireDate());
-        companyDatabase.insertIntoDatabase(3, employee.getSalary().toString());
-        companyDatabase.insertIntoDatabase(4, employee.getEmail());
-        companyDatabase.updateDatabase();
-        companyDatabase.closeDatabase();
+        toDatabase.insertEmployeeData(employee);
     }
 
     public void addEmployeeCompanyData () {

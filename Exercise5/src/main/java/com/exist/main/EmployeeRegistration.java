@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 import com.exist.main_Functions.Database;
+import com.exist.main_Functions.Insert;
 import com.exist.menu.main_Menu.EmployeeRegistrationMenu;
 import com.exist.menu.main_Menu.MenuOptions;
 
@@ -12,6 +13,7 @@ public class EmployeeRegistration {
     private static String userChoice;
     private static Scanner userInput;
     private static Database companyDatabase;
+    private static Insert insertToDatabase;
     private static EmployeeRegistrationMenu menu;
     private static boolean exitMenu;
     private static final String BLANK = "b";
@@ -24,6 +26,7 @@ public class EmployeeRegistration {
     public EmployeeRegistration () {
         userInput = new Scanner(System.in);
         companyDatabase = new Database();
+        insertToDatabase = new Insert();
         exitMenu = false;
     }
 
@@ -51,6 +54,7 @@ public class EmployeeRegistration {
     public void loginDatabase () {
             boolean exitLogin = false;
             companyDatabase.setCredentials(dbUrl + dbName, user, pass);
+            insertToDatabase.setCredentials(dbUrl + dbName, user, pass);
             exitLogin = companyDatabase.loginDatabase();
             if (exitLogin) {
                 System.out.println("Login to Database Successful\n");
