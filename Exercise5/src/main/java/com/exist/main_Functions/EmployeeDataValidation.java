@@ -114,17 +114,19 @@ public class EmployeeDataValidation {
         while (!exit) {
             System.out.print(print);
             tempString = userInput.nextLine().trim();
-            if (validate.containsOnlyLetters(tempString) && validate.belowCharLimit(tempString, LIMIT)) {    
-                data = companyDatabase.getData(query + tempString + "\'"); 
+            if (validate.containsOnlyLetters(tempString) && validate.belowCharLimit(tempString, LIMIT)) {
                 try {
+                    companyDatabase.loginDatabase();
+                    data = companyDatabase.getData(query + tempString + "\'"); 
                     dataExists = data.isBeforeFirst();
+                    if (!dataExists){
+                        exit = true;
+                    } else {
+                        System.out.println("Data already exists!");
+                    }
+                   companyDatabase.closeDatabase();
                 } catch (SQLException e) {
-                    System.out.println(e);
-                }
-                if (!dataExists){
-                    exit = true;
-                } else {
-                    System.out.println("Data already exists!");
+                    e.printStackTrace();
                 }
             }
         }
