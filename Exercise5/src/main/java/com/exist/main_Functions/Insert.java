@@ -54,11 +54,13 @@ public class Insert {
 
     public void insertPosition (PositionData positionList) {
         try {
+            dbConnection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
             insertStatement = dbConnection.prepareStatement(sqlStatement3);
             insertStatement.setString(1, positionList.getPositionName());
-            insertStatement.setString(2, positionList.getDepartmentId().toString());
+            insertStatement.setString(2, positionList.getDeptId().toString());
             insertStatement.executeUpdate();
             insertStatement.close();
+            dbConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,10 +68,12 @@ public class Insert {
 
     public void insertNewDept (String deptName) {
         try {
+            dbConnection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
             insertStatement = dbConnection.prepareStatement(sqlStatement4);
             insertStatement.setString(1, deptName);
             insertStatement.executeUpdate();
             insertStatement.close();
+            dbConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
