@@ -57,12 +57,9 @@ public class AddData {
     }
 
     public void addNewDepartment () {
-        companyDatabase.loginDatabase();
         view.showDepartments(QUERY_DEPARTMENTS);
-        companyDatabase.insertStatement(sqlStatement4);
-        companyDatabase.insertIntoDatabase(1, validate.newWordData("Department: ", QUERY_DEPARTMENTS + DEPT_NAME_CONDITION));
-        companyDatabase.updateDatabase();
-        companyDatabase.closeDatabase();
+        String departmentName = validate.newWordData("Department: ", QUERY_DEPARTMENTS + DEPT_NAME_CONDITION);
+        toDatabase.insertNewDept(departmentName);
     }
 
 }
