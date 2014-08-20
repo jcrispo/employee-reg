@@ -155,9 +155,7 @@ public class ViewEmployeeData {
                 exit = false;
            }
         }
-        companyDatabase.loginDatabase();
         view.showPositions(QUERYPOSITIONS + positionSort);
-        companyDatabase.closeDatabase();
     }
 
     public void viewSortedDepartments () {
@@ -177,9 +175,7 @@ public class ViewEmployeeData {
                 exit = false;
            }
         }
-        companyDatabase.loginDatabase();//delete
         view.showDepartments(QUERYDEPARTMENTS + departmentSort);
-        companyDatabase.closeDatabase();//delete
     }
 
     public String getAllDataQueryStatement () {
