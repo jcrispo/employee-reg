@@ -117,7 +117,7 @@ public class ViewEmployeeData {
     }
 
     public void showDepartments (String query) {
-        //companyDatabase.loginDatabase();
+        companyDatabase.loginDatabase();
         data = companyDatabase.getData(query);
         try {
            if (!data.isBeforeFirst()){
@@ -130,12 +130,12 @@ public class ViewEmployeeData {
                 String department = data.getString("departments.dept_name");
                 System.out.format(DEPARTMENTDISPLAYFORMAT, id + " ", department);
             }
-            //data.close();
-            //data = null;
+            data.close();
+            data = null;
         } catch (SQLException e) {
             System.out.println("Error retrieving data from Company Database");
         }
-        //companyDatabase.closeDatabase();
+        companyDatabase.closeDatabase();
     }
 
     public void viewSortedPosition () {
