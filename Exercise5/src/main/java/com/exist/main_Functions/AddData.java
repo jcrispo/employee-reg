@@ -8,6 +8,7 @@ public class AddData {
     private ViewEmployeeData view;
     private InputValidation validation;
     private EmployeeData employee;
+    private PositionData positionList;
     private Insert toDatabase;
     private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
     private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
@@ -27,6 +28,7 @@ public class AddData {
         validate = new EmployeeDataValidation();
         view = new ViewEmployeeData();
         employee = new EmployeeData();
+        positionList = new PositionData();
         toDatabase = new Insert();
     }
 
@@ -46,7 +48,12 @@ public class AddData {
         toDatabase.insertEmployeeData(employee);
     }
 
-    public void addEmployeeCompanyData () {
+    public void addNewPosition () {
+        view.showPositions(QUERY_POSITIONS);
+        positionList.addPositionName(validate.newWordData("Position: ", QUERY_POSITION_DATA + POS_NAME_CONDITION));
+        view.showDepartments(QUERY_DEPARTMENTS);
+        positionList.setDeptId(Integer.valueOf(validate.numericDataExists("Department: ", QUERY_DEPARTMENTS + DEPT_NUM_CONDITION)));
+        toDatabase.insertPosition(positionList);
     }
 
     public void addNewDepartment () {
@@ -54,17 +61,6 @@ public class AddData {
         view.showDepartments(QUERY_DEPARTMENTS);
         companyDatabase.insertStatement(sqlStatement4);
         companyDatabase.insertIntoDatabase(1, validate.newWordData("Department: ", QUERY_DEPARTMENTS + DEPT_NAME_CONDITION));
-        companyDatabase.updateDatabase();
-        companyDatabase.closeDatabase();
-    }
-
-    public void addNewPosition () {
-        companyDatabase.loginDatabase();
-        view.showPositions(QUERY_POSITIONS);
-        companyDatabase.insertStatement(sqlStatement3);
-        companyDatabase.insertIntoDatabase(1, validate.newWordData("Position: ", QUERY_POSITION_DATA + POS_NAME_CONDITION));
-        view.showDepartments(QUERY_DEPARTMENTS);
-        companyDatabase.insertIntoDatabase(2, validate.numericDataExists("Department: ", QUERY_DEPARTMENTS + DEPT_NUM_CONDITION ));
         companyDatabase.updateDatabase();
         companyDatabase.closeDatabase();
     }
