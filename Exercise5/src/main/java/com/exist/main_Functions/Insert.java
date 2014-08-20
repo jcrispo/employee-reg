@@ -4,8 +4,6 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
 
 public class Insert {
     private Connection dbConnection;
@@ -80,14 +78,3 @@ public class Insert {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
