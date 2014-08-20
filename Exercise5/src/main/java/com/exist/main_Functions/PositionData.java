@@ -16,7 +16,7 @@ public class PositionData {
         return position;
     }
 
-    public Integer getDepartmentId () {
+    public Integer getDeptId () {
         return deptId;
     }
 
