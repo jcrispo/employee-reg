@@ -50,7 +50,7 @@ public class Insert {
         }        
     }
 
-    public void insertPosition (PositionData positionList) {
+    public void insertPosition (CompanyData positionList) {
         try {
             dbConnection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
             insertStatement = dbConnection.prepareStatement(sqlStatement3);

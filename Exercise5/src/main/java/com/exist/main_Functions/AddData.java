@@ -8,7 +8,7 @@ public class AddData {
     private ViewEmployeeData view;
     private InputValidation validation;
     private EmployeeData employee;
-    private PositionData positionList;
+    private CompanyData positionList;
     private Insert toDatabase;
     private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
     private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
@@ -28,7 +28,7 @@ public class AddData {
         validate = new EmployeeDataValidation();
         view = new ViewEmployeeData();
         employee = new EmployeeData();
-        positionList = new PositionData();
+        positionList = new CompanyData();
         toDatabase = new Insert();
     }
 
@@ -50,7 +50,7 @@ public class AddData {
 
     public void addNewPosition () {
         view.showPositions(QUERY_POSITIONS);
-        positionList.addPositionName(validate.newWordData("Position: ", QUERY_POSITION_DATA + POS_NAME_CONDITION));
+        positionList.setPositionName(validate.newWordData("Position: ", QUERY_POSITION_DATA + POS_NAME_CONDITION));
         view.showDepartments(QUERY_DEPARTMENTS);
         positionList.setDeptId(Integer.valueOf(validate.numericDataExists("Department: ", QUERY_DEPARTMENTS + DEPT_NUM_CONDITION)));
         toDatabase.insertPosition(positionList);
