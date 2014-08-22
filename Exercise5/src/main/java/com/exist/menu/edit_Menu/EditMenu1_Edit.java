@@ -38,7 +38,7 @@ public class EditMenu1_Edit extends EditMenu1 {
         condition = " WHERE personalInfo.employeeId = " + employeeNumberInput + ";";
         while (!exitEditMenu) {
             companyDatabase.loginDatabase();
-            view.showData(sqlQuery + condition);
+            view.showDataNoLimit(sqlQuery + condition);
             companyDatabase.closeDatabase(); 
             if (view.invalidSearch()) {
                 System.out.println("User ID does not exist!");

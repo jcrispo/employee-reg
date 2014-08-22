@@ -25,13 +25,13 @@ public class Delete_Delete extends Delete_Menu {
 
     public void execute (String employeeNumber) {
         companyDatabase.loginDatabase();
-        view.showData(view.getAllDataQueryStatement() + condition + employeeNumber + ";");
+        view.showDataNoLimit(view.getAllDataQueryStatement() + condition + employeeNumber + ";");
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
             view.setInvalidSearchToDefault();
         } else {
             while (!exitDeleteConfirmation) {
-                System.out.print("Confirm deletion of data? 'y'/'n': ");
+                System.out.print("\nConfirm deletion of data? 'y'/'n': ");
                 userInput = input.nextLine().trim();
                 if (userInput.equals("y")) {
                     companyDatabase.loginDatabase();
