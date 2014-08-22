@@ -15,6 +15,7 @@ public class EmployeeDataValidation {
     private Database companyDatabase;
     private ViewEmployeeData view;
     private Scanner userInput;
+    private DatabaseRetrieve fromDatabase;
     private static Calendar date;
     private static ResultSet data;
     private static boolean inputIsValid;
@@ -30,6 +31,7 @@ public class EmployeeDataValidation {
         userInput = new Scanner(System.in);
         view = new ViewEmployeeData();
         date = new GregorianCalendar();
+        fromDatabase = new DatabaseRetrieve();
         inputIsValid = false;
         data = null;
     }
@@ -88,21 +90,15 @@ public class EmployeeDataValidation {
 
     public String numericDataExists (String print, String query) {
         boolean dataExists = false;
-        while (!dataExists) {
+        boolean resultIsEmpty = true;
+        while (resultIsEmpty) {
             System.out.print(print);
             tempString = userInput.nextLine().trim();
-            if (validate.containsOnlyNumbers(tempString)) {    
-                companyDatabase.loginDatabase();
-                data = companyDatabase.getData(query + tempString); 
-                try {
-                    dataExists = data.isBeforeFirst();
-                } catch (SQLException e) {
-                    System.out.println(e);
-                }
-                if (!dataExists){
+            if (validate.containsOnlyNumbers(tempString)) {
+                resultIsEmpty = fromDatabase.resultIsEmpty(query + tempString);
+                if (resultIsEmpty){
                     System.out.println("ID number does not exist. Try again");
                 }
-                companyDatabase.closeDatabase();
             }
         }
         return tempString;
@@ -111,22 +107,14 @@ public class EmployeeDataValidation {
     public String newWordData (String print, String query) {
         boolean exit = false;
         boolean dataExists = true;
-        while (!exit) {
+        boolean resultIsEmpty = false; 
+       while (!resultIsEmpty) {
             System.out.print(print);
             tempString = userInput.nextLine().trim();
             if (validate.containsOnlyLetters(tempString) && validate.belowCharLimit(tempString, LIMIT)) {
-                try {
-                    companyDatabase.loginDatabase();
-                    data = companyDatabase.getData(query + tempString + "\'"); 
-                    dataExists = data.isBeforeFirst();
-                    if (!dataExists){
-                        exit = true;
-                    } else {
-                        System.out.println("Data already exists!");
-                    }
-                   companyDatabase.closeDatabase();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                resultIsEmpty = fromDatabase.resultIsEmpty(query + tempString + "\'");
+                if (!resultIsEmpty){
+                    System.out.println("Data already exists!");
                 }
             }
         }

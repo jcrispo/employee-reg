@@ -117,13 +117,13 @@ public class ViewEmployeeData {
     public void showData (String query) {
         EmployeeData employee = new EmployeeData();
         EmployeeDataValidation validate = new EmployeeDataValidation();
-            int counter = 0;
-            int displayNum;
-            int counter2;
-            boolean exitLoop = false;
-            String showMore = null;
-            displayNum = Integer.valueOf(validate.number("How many results to display?: "));
-            counter2 = counter +  displayNum;
+        int counter = 0;
+        int displayNum;
+        int counter2;
+        boolean exitLoop = false;
+        String showMore = null;
+        displayNum = Integer.valueOf(validate.number("How many results to display?: "));
+        counter2 = counter +  displayNum;
         try {
             print.printHeader();
             boolean emptyResult = retrieve.resultIsEmpty(query);
