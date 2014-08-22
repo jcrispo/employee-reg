@@ -82,6 +82,7 @@ public class ViewEmployeeData {
             System.out.println("Database is Empty!");
         }
     }
+
     public void showDataNoLimit (String query) {
         EmployeeData employee = new EmployeeData();
         try {
@@ -117,13 +118,14 @@ public class ViewEmployeeData {
     public void showData (String query) {
         EmployeeData employee = new EmployeeData();
         EmployeeDataValidation validate = new EmployeeDataValidation();
-        int counter = 0;
-        int displayNum;
-        int counter2;
+        int employeeDataPrinted = 0;
+        int displayLimit;
+        int employeeDataPrintLimit;
         boolean exitLoop = false;
-        String showMore = null;
-        displayNum = Integer.valueOf(validate.number("How many results to display?: "));
-        counter2 = counter +  displayNum;
+        String showMore = "";
+
+        displayLimit = Integer.valueOf(validate.number("How many results to display?: "));
+        employeeDataPrintLimit = employeeDataPrinted + displayLimit; 
         try {
             print.printHeader();
             boolean emptyResult = retrieve.resultIsEmpty(query);
@@ -133,22 +135,26 @@ public class ViewEmployeeData {
             }
             dbConnection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
             data = retrieve.getData(dbConnection, query);
-            while (data.next() && counter <= counter2) {
-                if (counter == counter2) {
+            while (data.next() && employeeDataPrinted <= employeeDataPrintLimit) {
+                if (employeeDataPrinted == employeeDataPrintLimit) {
                     exitLoop = false;
                     while (!exitLoop) {
-                    exitLoop = true;
-                    System.out.print("\nShow more? y/n: ");
-                    showMore = input.nextLine();
+                        exitLoop = true;
+                        System.out.print("\nShow more? y/n: ");
+                        showMore = input.nextLine();
                         if (showMore.equals("y")) {
-                            counter2+=displayNum;
+                            employeeDataPrintLimit+=displayLimit;
                             print.printHeader();
                         } else if (showMore.equals("n")) {
                             break;
                         } else {
+                            System.out.println("Invalid input! 'y' or 'n' only.");
                             exitLoop = false;
                         }
                     }
+                }
+                if (showMore.equals("n")) {
+                    break;
                 }
                 employee.setEmployeeId(Integer.valueOf(data.getString("personalInfo.employeeId")));
                 employee.setFirstName(data.getString("personalInfo.firstName"));
@@ -162,7 +168,7 @@ public class ViewEmployeeData {
                 employee.setSalary(data.getInt("company.basicSalary"));
                 employee.setEmail(data.getString("company.emailId"));
                 print.printEmployeeData(employee);
-                counter++;
+                employeeDataPrinted++;
             }
             dbConnection.close();
         } catch (SQLException e) {
