@@ -4,11 +4,12 @@ import java.util.Scanner;
 import com.exist.main_Functions.InputValidation;
 import com.exist.main_Functions.Database;
 import com.exist.main_Functions.ViewEmployeeData;
+import com.exist.database.DB_Delete;
 
 public class Delete_Delete extends Delete_Menu {
     private static InputValidation validation;
-    private static Database companyDatabase;
     private static ViewEmployeeData view;
+    private DB_Delete delDB;
     private static Scanner input;
     private static String userInput;
     private static boolean exitDeleteConfirmation;
@@ -17,15 +18,14 @@ public class Delete_Delete extends Delete_Menu {
 
     public Delete_Delete () {
         validation = new InputValidation();
-        companyDatabase = new Database();
+        delDB = new DB_Delete();
         view = new ViewEmployeeData();
         input = new Scanner(System.in);
         exitDeleteConfirmation = false;
     }
 
     public void execute (String employeeNumber) {
-        companyDatabase.loginDatabase();
-        view.showDataNoLimit(view.getAllDataQueryStatement() + condition + employeeNumber + ";");
+        view.showDataNoLimit(view.ALLDATAQUERY + condition + employeeNumber + ";");
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
             view.setInvalidSearchToDefault();
@@ -34,10 +34,7 @@ public class Delete_Delete extends Delete_Menu {
                 System.out.print("\nConfirm deletion of data? 'y'/'n': ");
                 userInput = input.nextLine().trim();
                 if (userInput.equals("y")) {
-                    companyDatabase.loginDatabase();
-                    companyDatabase.insertStatement(deleteStatement + condition + employeeNumber + ";");
-                    companyDatabase.updateDatabase();
-                    companyDatabase.closeDatabase();
+                    delDB.deleteFromDb(deleteStatement + condition + employeeNumber + ";");
                     exitDeleteConfirmation = true;
                     System.out.println("Delete successful!");
                 } else if (userInput.equals("n")) {

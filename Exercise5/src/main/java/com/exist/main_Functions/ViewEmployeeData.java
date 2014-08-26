@@ -41,7 +41,7 @@ public class ViewEmployeeData {
     private static final String QUERYDEPARTMENTS = "SELECT * FROM departments";
     private static final String QUERYPOSITIONS = "SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name"
       + " FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId";
-    private static final String ALLDATAQUERY = "SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate,"
+    public static final String ALLDATAQUERY = "SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate,"
       + " personalInfo.gender, company.hireDate, company.position_name, company.dept_name, company.basicSalary, company.emailId FROM personalInfo"
       + " LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name,"
       + " companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData"
