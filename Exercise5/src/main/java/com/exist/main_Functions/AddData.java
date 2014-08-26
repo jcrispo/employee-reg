@@ -1,6 +1,7 @@
 package com.exist.main_Functions;
 
 import java.util.Scanner;
+import com.exist.database.DB_Insert;
 
 public class AddData {
     private Database companyDatabase;
@@ -9,7 +10,7 @@ public class AddData {
     private InputValidation validation;
     private EmployeeData employee;
     private CompanyData positionList;
-    private Insert toDatabase;
+    private DB_Insert toDatabase;
     private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
     private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
     private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
@@ -29,7 +30,7 @@ public class AddData {
         view = new ViewEmployeeData();
         employee = new EmployeeData();
         positionList = new CompanyData();
-        toDatabase = new Insert();
+        toDatabase = new DB_Insert();
     }
 
     public void addEmployeePersonalData () {

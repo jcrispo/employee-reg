@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import com.exist.main_Functions.Database;
-import com.exist.main_Functions.Insert;
+import com.exist.database.DB_Insert;
 import com.exist.main_Functions.ViewEmployeeData;
 import com.exist.main_Functions.DatabaseRetrieve;
 import com.exist.menu.main_Menu.EmployeeRegistrationMenu;
@@ -20,7 +20,7 @@ public class EmployeeRegistration {
     private static Connection dbConnection;
     private static String userChoice;
     private static Scanner userInput;
-    private static Insert insertToDatabase;
+    private static DB_Insert insertToDatabase;
     private static ViewEmployeeData view;
     private static DatabaseRetrieve retrieveFromDatabase;
     private static EmployeeRegistrationMenu menu;
@@ -31,7 +31,7 @@ public class EmployeeRegistration {
     public EmployeeRegistration () {
         dbConnection = null;
         userInput = new Scanner(System.in);
-        insertToDatabase = new Insert();
+        insertToDatabase = new DB_Insert();
         view = new ViewEmployeeData();
         retrieveFromDatabase = new DatabaseRetrieve();
         exitMenu = false;

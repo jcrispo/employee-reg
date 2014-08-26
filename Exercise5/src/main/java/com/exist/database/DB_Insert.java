@@ -1,11 +1,13 @@
-package com.exist.main_Functions;
+package com.exist.database;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import com.exist.main_Functions.EmployeeData;
+import com.exist.main_Functions.CompanyData;
 
-public class Insert {
+public class DB_Insert {
     private Connection dbConnection;
     private PreparedStatement insertStatement;
     private static String databaseUrl;
@@ -16,7 +18,7 @@ public class Insert {
     private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
     private static final String sqlStatement4 = "INSERT INTO departments (dept_name) VALUES (?)";
 
-    public Insert () {
+    public DB_Insert () {
         dbConnection = null;
         insertStatement = null;
     }
