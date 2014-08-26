@@ -6,9 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Formatter;
 import java.util.Scanner;
+import com.exist.database.DB_Retrieve;
 
 public class PrintDisplay {
-    private DatabaseRetrieve retrieve;
+    private DB_Retrieve retrieve;
     private static Connection dbConnection;
     private static ResultSet data;
     private static Scanner input;
@@ -33,7 +34,7 @@ public class PrintDisplay {
     private static final String DEPARTMENTDISPLAYFORMAT = "|%7s| %-21s |\n";
 
     public PrintDisplay () {
-        retrieve = new DatabaseRetrieve();
+        retrieve = new DB_Retrieve();
         dbConnection = null;
         data = null;
     }

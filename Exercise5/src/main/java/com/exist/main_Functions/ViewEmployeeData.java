@@ -8,9 +8,10 @@ import java.util.Formatter;
 import java.util.Scanner;
 import com.exist.menu.sort_Menu.Sort_Menu;
 import com.exist.menu.sort_Menu.Sort_Options;
+import com.exist.database.DB_Retrieve;
 
 public class ViewEmployeeData {
-    private DatabaseRetrieve retrieve;
+    private DB_Retrieve retrieve;
     private PrintDisplay print;
     private static Connection dbConnection;
     private static ResultSet data;
@@ -51,7 +52,7 @@ public class ViewEmployeeData {
       + " ON personalInfo.employeeId=company.employeeId";
 
     public ViewEmployeeData () {
-        retrieve = new DatabaseRetrieve();
+        retrieve = new DB_Retrieve();
         input = new Scanner(System.in);
         print = new PrintDisplay();
         dbConnection = null;

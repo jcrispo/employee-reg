@@ -1,4 +1,4 @@
-package com.exist.main_Functions;
+package com.exist.database;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class DatabaseRetrieve {
+public class DB_Retrieve {
     private ResultSet data;
     private Statement sqlStatement;
     private Connection dbConnection;
@@ -25,7 +25,7 @@ public class DatabaseRetrieve {
       + " ON companyEmployeeData.position_refId=posdept.position_refId) AS company"
       + " ON personalInfo.employeeId=company.employeeId";
 
-    public DatabaseRetrieve () {
+    public DB_Retrieve () {
         dbConnection = null;
         sqlStatement = null;
         data = null;
@@ -38,7 +38,7 @@ public class DatabaseRetrieve {
     }
 
     public boolean resultIsEmpty (String query) {
-        DatabaseRetrieve mainClass = new DatabaseRetrieve();
+        DB_Retrieve mainClass = new DB_Retrieve();
         try {
             dbConnection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
             data = mainClass.getData(dbConnection, query);
@@ -64,17 +64,17 @@ public class DatabaseRetrieve {
     } 
 
     public ResultSet employeeInfo (Connection dbConnect) {
-        DatabaseRetrieve retrieve = new DatabaseRetrieve();
+        DB_Retrieve retrieve = new DB_Retrieve();
         return retrieve.getData(dbConnect, ALLDATAQUERY); 
     }
 
     public ResultSet allPositions (Connection dbConnect) {
-        DatabaseRetrieve retrieve = new DatabaseRetrieve();
+        DB_Retrieve retrieve = new DB_Retrieve();
         return retrieve.getData(dbConnect, QUERYPOSITIONS);
     }
 
     public ResultSet allDepartments (Connection dbConnect) {
-        DatabaseRetrieve retrieve = new DatabaseRetrieve();
+        DB_Retrieve retrieve = new DB_Retrieve();
         return retrieve.getData(dbConnect, QUERYDEPARTMENTS);
     }
 

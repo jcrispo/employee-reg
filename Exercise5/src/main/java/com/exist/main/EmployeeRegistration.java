@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import com.exist.main_Functions.Database;
 import com.exist.database.DB_Insert;
 import com.exist.main_Functions.ViewEmployeeData;
-import com.exist.main_Functions.DatabaseRetrieve;
+import com.exist.database.DB_Retrieve;
 import com.exist.menu.main_Menu.EmployeeRegistrationMenu;
 import com.exist.menu.main_Menu.MenuOptions;
 
@@ -22,7 +22,7 @@ public class EmployeeRegistration {
     private static Scanner userInput;
     private static DB_Insert insertToDatabase;
     private static ViewEmployeeData view;
-    private static DatabaseRetrieve retrieveFromDatabase;
+    private static DB_Retrieve retrieveFromDatabase;
     private static EmployeeRegistrationMenu menu;
     private static boolean exitMenu;
     private static final String BLANK = "b";
@@ -33,7 +33,7 @@ public class EmployeeRegistration {
         userInput = new Scanner(System.in);
         insertToDatabase = new DB_Insert();
         view = new ViewEmployeeData();
-        retrieveFromDatabase = new DatabaseRetrieve();
+        retrieveFromDatabase = new DB_Retrieve();
         exitMenu = false;
     }
 

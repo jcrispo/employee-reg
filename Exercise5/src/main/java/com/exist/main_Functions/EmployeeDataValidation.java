@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
+import com.exist.database.DB_Retrieve;
 
 public class EmployeeDataValidation {
     private SimpleDateFormat dateFormat;
@@ -15,7 +16,7 @@ public class EmployeeDataValidation {
     private Database companyDatabase;
     private ViewEmployeeData view;
     private Scanner userInput;
-    private DatabaseRetrieve fromDatabase;
+    private DB_Retrieve fromDatabase;
     private static Calendar date;
     private static ResultSet data;
     private static boolean inputIsValid;
@@ -31,7 +32,7 @@ public class EmployeeDataValidation {
         userInput = new Scanner(System.in);
         view = new ViewEmployeeData();
         date = new GregorianCalendar();
-        fromDatabase = new DatabaseRetrieve();
+        fromDatabase = new DB_Retrieve();
         inputIsValid = false;
         data = null;
     }
