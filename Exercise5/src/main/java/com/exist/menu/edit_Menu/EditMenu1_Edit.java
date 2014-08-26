@@ -13,12 +13,10 @@ import com.exist.menu.edit_Menu.sub_Menu.Edit_Position;
 import com.exist.menu.edit_Menu.sub_Menu.Edit_Blank;
 import com.exist.menu.edit_Menu.sub_Menu.Edit_Invalid;
 import com.exist.menu.edit_Menu.sub_Menu.Edit_Exit;
-import com.exist.main_Functions.Database;
 import com.exist.main_Functions.ViewEmployeeData;
 
 public class EditMenu1_Edit extends EditMenu1 {
     private static ViewEmployeeData view;
-    private static Database companyDatabase;
     private static Scanner userInput;
     private static EditMenu menu;
     private static String condition;
@@ -29,7 +27,6 @@ public class EditMenu1_Edit extends EditMenu1 {
     public EditMenu1_Edit () {
         view = new ViewEmployeeData();
         userInput = new Scanner(System.in);
-        companyDatabase = new Database();
         exitEditMenu = false;
     }
 
@@ -37,15 +34,14 @@ public class EditMenu1_Edit extends EditMenu1 {
         sqlQuery = view.getAllDataQueryStatement();
         condition = " WHERE personalInfo.employeeId = " + employeeNumberInput + ";";
         while (!exitEditMenu) {
-            companyDatabase.loginDatabase();
             view.showDataNoLimit(sqlQuery + condition);
-            companyDatabase.closeDatabase(); 
             if (view.invalidSearch()) {
                 System.out.println("User ID does not exist!");
                 view.setInvalidSearchToDefault();
                 exitEditMenu = true;
             } else {
-                System.out.print("\nChoose Field to Edit:\n\t(1) First Name\t(2) Middle Name\t(3) Last Name\n\t(4) Gender\t(5) Birth Date\t(6) Hire Date\n\t(7) Position\t(8) Salary\t(9) Cancel\nEnter option: ");
+                System.out.print("\nChoose Field to Edit:\n\t(1) First Name\t(2) Middle Name\t(3) Last Name\n\t(4) Gender\t(5) Birth Date" 
+                  + "\t(6) Hire Date\n\t(7) Position\t(8) Salary\t(9) Cancel\nEnter option: ");
                 userChoice = (userInput.nextLine()).trim();
                 menu = Edit_Options.choice(userChoice);
                 menu.execute(userChoice, employeeNumberInput);
