@@ -77,7 +77,7 @@ public class InputValidation {
 
     public boolean yearIsValid (Calendar date) {
             if (date.get(YEAR) > currentDate.get(YEAR)) {
-                System.out.println("\nInput data shouldn't exceed the current date: \n");
+                System.out.println("\nInput data shouldn't exceed the current date: year\n");
                 return false;
             } else if (date.get(YEAR) < LOWEST_VALID_YEAR) {
                 System.out.println("\nInput Year data should follow the format YYYY with Four significant digits\n");
@@ -88,8 +88,8 @@ public class InputValidation {
     }
 
     public boolean monthIsValid (Calendar date) {
-            if (((date.get(MONTH) < 1) || (date.get(MONTH) > 12)) || (date.get(YEAR) == currentDate.get(YEAR) && date.get(MONTH) > currentDate.get(MONTH))) {
-                System.out.println("\nInput value shouldn't exceed the current date: \n");
+            if (date.get(YEAR) == currentDate.get(YEAR) && date.get(MONTH) > currentDate.get(MONTH)) {
+                System.out.println("\nInput value shouldn't exceed the current date: month\n");
                 return false;
             } else {
                 return true;
@@ -98,7 +98,7 @@ public class InputValidation {
 
     public boolean dayIsValid (Calendar date) {
             if (date.get(YEAR) == currentDate.get(YEAR) && date.get(MONTH) == currentDate.get(MONTH) && date.get(DATE) > currentDate.get(DATE)) {
-                System.out.println("\nInput value shouldn't exceed the current date: \n");
+                System.out.println("\nInput value shouldn't exceed the current date: day\n");
                 return false;
             } else {
                 return true;
