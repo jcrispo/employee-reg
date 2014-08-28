@@ -21,7 +21,9 @@ public class DBDelete {
             e.printStackTrace();
         } finally {
             try {
-                dbConnection.close();
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();    
             }
