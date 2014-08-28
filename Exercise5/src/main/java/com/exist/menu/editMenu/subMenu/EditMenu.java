@@ -1,0 +1,8 @@
+package com.exist.menu.editMenu.subMenu;
+
+public abstract class EditMenu {
+
+    public abstract void execute (String userInput, String employeeNumberInput);
+    public abstract boolean exitEditMenu ();
+
+}

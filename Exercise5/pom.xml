@@ -26,7 +26,7 @@
               <addClasspath>true</addClasspath>
             </manifest>
             <manifestEntries>
-              <Class-Path>../mysql-connector-java-5.1.31-bin.jar</Class-Path>
+              <Class-Path>../mysql-connector-java-5.1.31-bin.jar ../commons-dbcp2-2.0.1.jar ../commons-pool2-2.2.jar ../commons-logging-1.2.jar</Class-Path>
             </manifestEntries>
           </archive>
         </configuration>
@@ -35,6 +35,11 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-dbcp2</artifactId>
+      <version>2.0.1</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

@@ -1,50 +1,33 @@
 package com.exist.main;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import com.exist.main_Functions.Database;
-import com.exist.database.DB_Insert;
-import com.exist.main_Functions.ViewEmployeeData;
-import com.exist.database.DB_Retrieve;
-import com.exist.menu.main_Menu.EmployeeRegistrationMenu;
-import com.exist.menu.main_Menu.MenuOptions;
+import com.exist.menu.mainMenu.EmployeeRegistrationMenu;
+import com.exist.menu.mainMenu.MenuOptions;
+import com.exist.database.DBDataSource;
 
 public class EmployeeRegistration {
-    private static Connection dbConnection;
     private static String userChoice;
-    private static Scanner userInput;
-    private static DB_Insert insertToDatabase;
-    private static ViewEmployeeData view;
-    private static DB_Retrieve retrieveFromDatabase;
-    private static EmployeeRegistrationMenu menu;
-    private static boolean exitMenu;
     private static final String BLANK = "b";
     private static final String menuOptions = "\nRegister 'r' | View 'v' | Edit 'e' | Delete 'd' | Exit 'x' : ";
 
     public EmployeeRegistration () {
-        dbConnection = null;
-        userInput = new Scanner(System.in);
-        insertToDatabase = new DB_Insert();
-        view = new ViewEmployeeData();
-        retrieveFromDatabase = new DB_Retrieve();
-        exitMenu = false;
+        userChoice = new String();
     }
 
     public static void main (String[] args) {
         EmployeeRegistration mainClass = new EmployeeRegistration();
+
         System.out.println("Employee Registration Program\n");
 
         mainClass.loginDatabase();
+
+        boolean exitMenu = false;
         while (!exitMenu) {
             mainClass.showMenu();
-            menu = MenuOptions.userChoice(userChoice);
+
+            EmployeeRegistrationMenu menu = MenuOptions.userChoice(userChoice);
             menu.execute();
             exitMenu = menu.exitMenu();
         }
@@ -52,6 +35,8 @@ public class EmployeeRegistration {
 
     public void showMenu () {
         System.out.print(menuOptions);
+
+        Scanner userInput = new Scanner(System.in);
         userChoice = (userInput.nextLine()).trim();
         if (userChoice.length() == 0) {
             userChoice = BLANK;
@@ -59,24 +44,24 @@ public class EmployeeRegistration {
     }
 
     public void loginDatabase () {
-        Properties dbProperty = new Properties();
+        Connection dbConnection = null;
+
         try {
-            InputStream is = new FileInputStream("db.properties");
-            dbProperty.load(is);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            dbConnection = DriverManager.getConnection(dbProperty.getProperty("db.url"), dbProperty.getProperty("db.user"), dbProperty.getProperty("db.password"));
+            dbConnection = DBDataSource.getInstance().getConnection();
             System.out.println("Login to Database Successful\n");
         } catch (SQLException e) {
             System.out.println("Wrong Username / Password! ");
+            e.printStackTrace();
             System.exit(0);
+        } finally {
+            try {
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        insertToDatabase.setCredentials(dbProperty.getProperty("db.url"), dbProperty.getProperty("db.user"), dbProperty.getProperty("db.password"));
-        retrieveFromDatabase.setCredentials(dbProperty.getProperty("db.url"), dbProperty.getProperty("db.user"), dbProperty.getProperty("db.password"));
-        view.setCredentials(dbProperty.getProperty("db.url"), dbProperty.getProperty("db.user"), dbProperty.getProperty("db.password"));
     }
+
 }
