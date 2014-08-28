@@ -103,6 +103,7 @@ public class EmployeeDataValidation {
             System.out.print(print);
 
             returnValue = userInput.nextLine().trim();
+
             if (validate.containsOnlyNumbers(returnValue)) {
                 resultIsEmpty = fromDatabase.resultIsEmpty(query + returnValue);
                 if (resultIsEmpty){

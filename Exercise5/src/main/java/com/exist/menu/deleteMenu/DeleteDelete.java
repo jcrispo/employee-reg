@@ -4,6 +4,7 @@ import java.util.Scanner;
 import com.exist.mainFunctions.InputValidation;
 import com.exist.mainFunctions.ViewEmployeeData;
 import com.exist.database.DBDelete;
+import com.exist.database.DBRetrieve;
 
 public class DeleteDelete extends DeleteMenu {
     private InputValidation validation;
@@ -24,7 +25,7 @@ public class DeleteDelete extends DeleteMenu {
     }
 
     public void execute (String employeeNumber) {
-        view.showDataNoLimit(view.ALLDATAQUERY + condition + employeeNumber + ";");
+        view.showDataNoLimit(DBRetrieve.getQuery("queryAllData") + condition + employeeNumber + ";");
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
             view.setInvalidSearchToDefault();
