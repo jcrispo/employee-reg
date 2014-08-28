@@ -5,48 +5,44 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
-import com.exist.database.DBDataSource;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import com.exist.database.DBDataSource;
 
 public class DBRetrieve implements Retrieve {
-    private ResultSet data;
-    private Statement sqlStatement;
-    private Connection dbConnection;
-    private static final String QUERYDEPARTMENTS = "SELECT * FROM departments";
-    private static final String QUERYPOSITIONS = "SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name"
-      + " FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId";
-    private static final String ALLDATAQUERY = "SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate,"
-      + " personalInfo.gender, company.hireDate, company.position_name, company.dept_name, company.basicSalary, company.emailId FROM personalInfo"
-      + " LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name,"
-      + " companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData"
-      + " LEFT JOIN (SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition"
-      + " LEFT JOIN departments ON employeePosition.deptId=departments.deptId) AS posdept"
-      + " ON companyEmployeeData.position_refId=posdept.position_refId) AS company"
-      + " ON personalInfo.employeeId=company.employeeId";
-
-    public DBRetrieve () {
-        dbConnection = null;
-        sqlStatement = null;
-        data = null;
-    }
+    private static final String queryPropertyFileDir = "src/main/resources/query.properties";
 
     public boolean resultIsEmpty (String query) {
         boolean retVal = false;
 
-        DBRetrieve mainClass = new DBRetrieve();
+        Connection dbConnection = null;
+        ResultSet result = null;
+        Statement statement = null;
+
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
-            data = mainClass.getData(dbConnection, query);
-            if (!data.isBeforeFirst()){
+            statement = dbConnection.createStatement();
+            result = statement.executeQuery(query);
+
+            if (!result.isBeforeFirst()){
                 retVal = true;
             }
-            // dbConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             retVal = true;
         } finally {
             try {
+                if (result != null) {
+                    result.close();
+                }
+                if (statement != null) {
+                    statement.close();
+                }
                 if (dbConnection != null) {
                     dbConnection.close();
                 }
@@ -71,10 +67,15 @@ public class DBRetrieve implements Retrieve {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
 
-            if (!resultSet.isBeforeFirst()){
-                // TODO: Handle empty resultset
-            } else {
+            if (resultSet.isBeforeFirst()){
                 ResultSetMetaData metaData = resultSet.getMetaData();
+                List<String> columnLabels = new ArrayList<String>();
+
+                for (int columnIndex = 1; columnIndex <= metaData.getColumnCount(); columnIndex++) {
+                    columnLabels.add(metaData.getColumnLabel(columnIndex));
+                }
+
+                retVal.add(columnLabels);
 
                 while (resultSet.next()) {
                     List<String> columnData = new ArrayList<String>();
@@ -84,8 +85,7 @@ public class DBRetrieve implements Retrieve {
                     } 
 
                     retVal.add(columnData); 
-                    //print.printEmployeeData(employee);
-	        }
+                }
                 
             }
         } catch(SQLException e) {
@@ -111,42 +111,23 @@ public class DBRetrieve implements Retrieve {
         return retVal;
     }
 
-    public ResultSet getData (Connection dbConnect, String sqlQuery) {
-        Statement statement = null;
+    public static String getQuery (String propertyKey) {
+        String returnValue = new String();
+
         try {
-            statement = dbConnect.createStatement();
-            data = statement.executeQuery(sqlQuery);
-            return data;
-        } catch (SQLException e) {
+            Properties queryProperty = new Properties();
+            InputStream in = new FileInputStream(queryPropertyFileDir);
+
+            queryProperty.load(in);
+
+            returnValue = queryProperty.getProperty(propertyKey);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return null;
-        } finally {
-/*
-            try {
-            if (statement != null) {
-                statement.close();
-            }
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
-*/
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        
-    } 
 
-    public ResultSet employeeInfo (Connection dbConnect) {
-        DBRetrieve retrieve = new DBRetrieve();
-        return retrieve.getData(dbConnect, ALLDATAQUERY); 
-    }
-
-    public ResultSet allPositions (Connection dbConnect) {
-        DBRetrieve retrieve = new DBRetrieve();
-        return retrieve.getData(dbConnect, QUERYPOSITIONS);
-    }
-
-    public ResultSet allDepartments (Connection dbConnect) {
-        DBRetrieve retrieve = new DBRetrieve();
-        return retrieve.getData(dbConnect, QUERYDEPARTMENTS);
+        return returnValue;
     }
 
 } 
