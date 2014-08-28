@@ -16,7 +16,9 @@ public abstract class EditOptions extends EditMenu {
 
     public static EditMenu choice (String userInput) {
         InputValidation inputValidity = new InputValidation();
+
         int userNumberInput = BLANK;
+
         if (inputValidity.containsOnlyNumbers(userInput)) {
             userNumberInput = Integer.parseInt(userInput);
         }
@@ -46,7 +48,7 @@ public abstract class EditOptions extends EditMenu {
         }
     }
 
-    public abstract void execute (String userInput, String employeeNumberInput);
+    public abstract void execute (String employeeNumberInput);
     public abstract boolean exitEditMenu ();
 
 }
