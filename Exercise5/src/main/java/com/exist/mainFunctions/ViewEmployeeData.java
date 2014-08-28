@@ -1,21 +1,25 @@
 package com.exist.mainFunctions;
 
-import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Formatter;
 import java.util.Scanner;
+import java.util.List;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import com.exist.menu.sortMenu.SortMenu;
 import com.exist.menu.sortMenu.SortOptions;
 import com.exist.database.DBRetrieve;
 import com.exist.database.DBDataSource;
-import java.util.List;
 import com.exist.database.Retrieve;
 
 public class ViewEmployeeData {
     private DBRetrieve retrieve;
-    private Retrieve retrieve2;
+    private Retrieve retrieveFromDb;
     private PrintDisplay print;
     private SortMenu sort;
     private Scanner input;
@@ -44,18 +48,10 @@ public class ViewEmployeeData {
     private static final String QUERYDEPARTMENTS = "SELECT * FROM departments";
     private static final String QUERYPOSITIONS = "SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name"
       + " FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId";
-    public static final String ALLDATAQUERY = "SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate,"
-      + " personalInfo.gender, company.hireDate, company.position_name, company.dept_name, company.basicSalary, company.emailId FROM personalInfo"
-      + " LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name,"
-      + " companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData"
-      + " LEFT JOIN (SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition"
-      + " LEFT JOIN departments ON employeePosition.deptId=departments.deptId) AS posdept"
-      + " ON companyEmployeeData.position_refId=posdept.position_refId) AS company"
-      + " ON personalInfo.employeeId=company.employeeId";
 
     public ViewEmployeeData () {
         retrieve = new DBRetrieve();
-        retrieve2 = new DBRetrieve();
+        retrieveFromDb = new DBRetrieve();
         input = new Scanner(System.in);
         print = new PrintDisplay();
         validation = new InputValidation();
@@ -81,190 +77,35 @@ public class ViewEmployeeData {
             exitViewMenu = sort.exitViewMenu();
         }
 
-        databaseIsEmpty = retrieve.resultIsEmpty(ALLDATAQUERY);
-        view.showData(ALLDATAQUERY + sort.parameter());
+        databaseIsEmpty = retrieve.resultIsEmpty(DBRetrieve.getQuery("queryAllData"));
+        view.showData(DBRetrieve.getQuery("queryAllData") + sort.parameter());
         if (databaseIsEmpty) {
             System.out.println("Database is Empty!");
         }
     }
 
     public void showDataNoLimit (String query) {
-        EmployeeData employee = new EmployeeData();
+        List<List<String>> databaseData = retrieveFromDb.getData(query);
 
- //       Connection connection = null;
-        // ResultSet resultSet = null;
-
-        try {
-            print.printHeader();
-          //   boolean emptyResult = retrieve.resultIsEmpty(query);
-//            if (emptyResult){
-//                System.out.println("\nNo Result Found!");
-//                invalidSearchParameter = true;
-//            }
-           //  dbConnection = DBDataSource.getInstance().getConnection();
-            // resultSet = retrieve.getData(dbConnection, query);
-
-            List<List<String>> data = retrieve2.getData(query);
-
-            if (data.isEmpty()){
-                System.out.println("\nNo Result Found!");
-                invalidSearchParameter = true;                
-            } else {
-                for (List<String> row : data) {
-                    for (String column : row) {
-                        System.out.print(column + " ");
-                    }
-                    System.out.println();
-                }
-/*
-		    while (resultSet.next()) {
-		        employee.setEmployeeId(Integer.valueOf(resultSet.getString("personalInfo.employeeId")));
-		        employee.setFirstName(resultSet.getString("personalInfo.firstName"));
-		        employee.setMiddleName(resultSet.getString("personalInfo.middleName"));
-		        employee.setLastName(resultSet.getString("personalInfo.lastName"));
-		        employee.setGender(resultSet.getString("personalInfo.gender"));
-		        employee.setBirthDate(resultSet.getString("personalInfo.birthDate"));
-		        employee.setHireDate(resultSet.getString("company.hireDate"));
-		        employee.setPositionName(resultSet.getString("company.position_name"));
-		        employee.setDepartmentName(resultSet.getString("company.dept_name"));
-		        employee.setSalary(resultSet.getInt("company.basicSalary"));
-		        employee.setEmail(resultSet.getString("company.emailId"));
-		        print.printEmployeeData(employee);
-		    }
-*/
-            }
-
-            // dbConnection.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-        } finally {
-            try {
-/*
-            if (resultSet != null) {
-                resultSet.close();
-            }
-*/
-
-            if (dbConnection != null) {
-                dbConnection.close();    
-            }
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
+        if (databaseData.isEmpty()){
+            System.out.println("\nNo Result Found!");
+            invalidSearchParameter = true;                
+        } else {
+            print.printDatabaseData(databaseData);
         }
 
     }
 
     public void showData (String query) {
-        EmployeeData employee = new EmployeeData();
-        ViewEmployeeData view = new ViewEmployeeData();
-        EmployeeDataValidation validate = new EmployeeDataValidation();
-        int employeeDataPrinted = 0;
-        int displayLimit;
-        int employeeDataPrintLimit;
-        boolean exitLoop = false;
-        String showMore = "";
-        String fields = view.fieldsToDisplay();
-        System.out.println("Displaying fields: " + fields);
-        displayLimit = Integer.valueOf(validate.number("How many results to display?: "));
-        employeeDataPrintLimit = employeeDataPrinted + displayLimit; 
-        print.printHeader();
-        boolean emptyResult = retrieve.resultIsEmpty(query);
-        if (emptyResult){
-            System.out.println("\nNo Result Found!");
-            invalidSearchParameter = true;
-        }
-        try {
-            dbConnection = DBDataSource.getInstance().getConnection();
-            data = retrieve.getData(dbConnection, query);
-            while (data.next() && employeeDataPrinted <= employeeDataPrintLimit) {
-                if (employeeDataPrinted == employeeDataPrintLimit) {
-                    exitLoop = false;
-                    while (!exitLoop) {
-                        exitLoop = true;
-                        System.out.print("\nShow more? y/n: ");
-                        showMore = input.nextLine();
-                        if (showMore.equals("y")) {
-                            employeeDataPrintLimit+=displayLimit;
-                            print.printHeader();
-                        } else if (showMore.equals("n")) {
-                            break;
-                        } else {
-                            System.out.println("Invalid input! 'y' or 'n' only.");
-                            exitLoop = false;
-                        }
-                    }
-                }
-                if (showMore.equals("n")) {
-                    break;
-                }
-                employee.setEmployeeId(Integer.valueOf(data.getString("personalInfo.employeeId")));
-                employee.setFirstName(data.getString("personalInfo.firstName"));
-                employee.setMiddleName(data.getString("personalInfo.middleName"));
-                employee.setLastName(data.getString("personalInfo.lastName"));
-                employee.setGender(data.getString("personalInfo.gender"));
-                employee.setBirthDate(data.getString("personalInfo.birthDate"));
-                employee.setHireDate(data.getString("company.hireDate"));
-                employee.setPositionName(data.getString("company.position_name"));
-                employee.setDepartmentName(data.getString("company.dept_name"));
-                employee.setSalary(data.getInt("company.basicSalary"));
-                employee.setEmail(data.getString("company.emailId"));
-                print.printEmployeeData(employee);
-                employeeDataPrinted++;
-            }
-            dbConnection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+        List<List<String>> databaseData = retrieveFromDb.getData(query);
 
-    public void showPositions (String query) {
-        CompanyData positionList = new CompanyData();
-        boolean emptyResult = retrieve.resultIsEmpty(query);
-        if (emptyResult){
+        if (databaseData.isEmpty()){
             System.out.println("\nNo Result Found!");
-            invalidSearchParameter = true;
+            invalidSearchParameter = true;                
         } else {
-            print.printPositionHeader();
+            print.printDatabaseData(databaseData);
         }
-        try {
-            dbConnection = DBDataSource.getInstance().getConnection();
-            data = retrieve.getData(dbConnection, query);
-            data = retrieve.getData(dbConnection, query);
-            while (data.next()) {
-                positionList.setPositionId(data.getInt("employeePosition.position_refId"));
-                positionList.setPositionName(data.getString("employeePosition.position_name"));
-                positionList.setDepartmentName(data.getString("departments.dept_name"));
-                print.printPositions(positionList);
-            }
-            dbConnection.close();
-        } catch (SQLException e) {
-            System.out.println("Error retrieving data from Company Database");
-        }
-    }
 
-    public void showDepartments (String query) {
-        CompanyData departmentList = new CompanyData();
-        boolean emptyResult = retrieve.resultIsEmpty(query);
-        if (emptyResult){
-            System.out.println("\nNo Result Found!");
-            invalidSearchParameter = true;
-        } else {
-            print.printDepartmentHeader();
-        }
-        try {
-            dbConnection = DBDataSource.getInstance().getConnection();
-            data = retrieve.getData(dbConnection, query);
-            while (data.next()) {
-                departmentList.setDeptId(data.getInt("departments.deptId"));
-                departmentList.setDepartmentName(data.getString("departments.dept_name"));
-                print.printDepartments(departmentList); 
-            }
-            dbConnection.close();
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving data from Company Database");
-        }
     }
 
     public void viewSortedPosition () {
@@ -284,7 +125,7 @@ public class ViewEmployeeData {
                 exit = false;
            }
         }
-        view.showPositions(QUERYPOSITIONS + positionSort);
+        view.showData(QUERYPOSITIONS + positionSort);
     }
 
     public void viewSortedDepartments () {
@@ -304,7 +145,7 @@ public class ViewEmployeeData {
                 exit = false;
            }
         }
-        view.showDepartments(QUERYDEPARTMENTS + departmentSort);
+        view.showData(QUERYDEPARTMENTS + departmentSort);
     }
 
     public String fieldsToDisplay () {
@@ -353,10 +194,6 @@ public class ViewEmployeeData {
             }
         }
         return fieldNumbers;
-    }
-
-    public String getAllDataQueryStatement () {
-        return ALLDATAQUERY;
     }
 
     public boolean invalidSearch () {
