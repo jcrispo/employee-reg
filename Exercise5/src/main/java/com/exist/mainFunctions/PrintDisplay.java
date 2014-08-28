@@ -1,6 +1,7 @@
 package com.exist.mainFunctions;
 
 import java.util.Formatter;
+import java.util.List;
 
 public class PrintDisplay {
     private static final String ID = "ID ";
@@ -58,6 +59,15 @@ public class PrintDisplay {
         System.out.format("|%7s", departmentList.getDeptId() + " ");
         System.out.format("| %-21s", departmentList.getDepartmentName());
         System.out.println(" |");
+    }
+
+    public void printDatabaseData (List<List<String>> databaseData) {
+        for (List<String> columnData : databaseData) {
+            for (String data : columnData) {
+                System.out.format("| %-15s", data);
+            }
+            System.out.println();
+        }
     }
 
 }
