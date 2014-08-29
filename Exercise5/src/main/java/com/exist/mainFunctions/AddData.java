@@ -39,7 +39,7 @@ public class AddData {
         employee.setBirthDate(validate.dateString("Birth Date: "));
         employee.setHireDate(validate.dateString("Hire Date: "));
 
-        view.showData(QUERYPOSITIONS);
+        view.showDataNoLimit(QUERYPOSITIONS);
         System.out.println("Enter only the Position ID.");
         employee.setPosition(Integer.valueOf(validate.numericDataExists("Position: ", QUERYPOSITIONDATA + POSNUMCONDITION)));
 
@@ -50,17 +50,17 @@ public class AddData {
     }
 
     public void addNewPosition () {
-        view.showData(QUERYPOSITIONS);
+        view.showDataNoLimit(QUERYPOSITIONS);
         positionList.setPositionName(validate.newWordData("Position: ", QUERYPOSITIONDATA + POSNAMECONDITION));
 
-        view.showData(QUERYDEPARTMENTS);
+        view.showDataNoLimit(QUERYDEPARTMENTS);
         positionList.setDeptId(Integer.valueOf(validate.numericDataExists("Department: ", QUERYDEPARTMENTS + DEPTNUMCONDITION)));
 
         inDB.insertPosition(positionList);
     }
 
     public void addNewDepartment () {
-        view.showData(QUERYDEPARTMENTS);
+        view.showDataNoLimit(QUERYDEPARTMENTS);
         String departmentName = validate.newWordData("Department: ", QUERYDEPARTMENTS + DEPTNAMECONDITION);
 
         inDB.insertNewDept(departmentName);

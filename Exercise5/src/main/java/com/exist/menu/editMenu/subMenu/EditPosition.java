@@ -16,7 +16,7 @@ public class EditPosition extends EditMenu {
         EmployeeDataValidation validate = new EmployeeDataValidation();
         ViewEmployeeData view = new ViewEmployeeData();
 
-        view.showData(DBRetrieve.getQuery("queryPositions"));
+        view.showDataNoLimit(DBRetrieve.getQuery("queryPositions"));
 
         System.out.println("Enter only the Position ID.");
 
