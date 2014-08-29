@@ -92,7 +92,7 @@ public class ViewEmployeeData {
         Integer beginning = 0;
         String range = new String();
 
-        range = validate.number("Show how many Employees?: ");
+        range = validate.number("Show how many rows of data?: ");
 
         String showMore = "y";
         boolean exit = false;
@@ -110,7 +110,7 @@ public class ViewEmployeeData {
                 } else if (databaseData.isEmpty() && !beginning.equals("0")) {
                     System.out.println("No more data");
                     break;
-                } else if (databaseData.size() < Integer.valueOf(range)) {
+                } else if (databaseData.size() <= Integer.valueOf(range)) {
                     print.printDatabaseData(databaseData);
 
                     break;
@@ -125,7 +125,7 @@ public class ViewEmployeeData {
             } else {
                 System.out.println("Invalid input. Choose only between 'y' (yes) and 'n' (no)");
             }
-            System.out.print("Show more? y/n: ");
+            System.out.print("\nShow more? y/n: ");
 
             showMore = input.nextLine();
         } 
@@ -154,7 +154,7 @@ public class ViewEmployeeData {
            }
         }
 
-        view.showData(DBRetrieve.getQuery("queryPositions") + positionSort);
+        view.showDataNoLimit(DBRetrieve.getQuery("queryPositions") + positionSort);
     }
 
     public void viewSortedDepartments () {
@@ -179,7 +179,7 @@ public class ViewEmployeeData {
            }
         }
 
-        view.showData(DBRetrieve.getQuery("queryDepartments") + departmentSort);
+        view.showDataNoLimit(DBRetrieve.getQuery("queryDepartments") + departmentSort);
     }
 
     public String fieldsToDisplay () {
