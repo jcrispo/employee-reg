@@ -62,6 +62,8 @@ public class PrintDisplay {
     }
 
     public void printDatabaseData (List<List<String>> databaseData) {
+        System.out.println();
+
         for (List<String> columnData : databaseData) {
             for (String data : columnData) {
                 if (columnData.indexOf(data) == 0) {
