@@ -24,10 +24,7 @@ public class ViewEmployeeData {
     private SortMenu sort;
     private Scanner input;
     private InputValidation validation;
-    private static Connection dbConnection;
-    private static ResultSet data;
     private static String userChoice;
-    private static boolean exitViewMenu;
     private static boolean invalidSearchParameter;
     private static final String ID = "ID ";
     private static final String NAME = "Employee Name";
@@ -46,8 +43,6 @@ public class ViewEmployeeData {
     private static final String POSITIONDISPLAYFORMAT = "|%7s| %-20s| %-21s |\n";
     private static final String DEPARTMENTDISPLAYFORMAT = "|%7s| %-21s |\n";
     private static final String QUERYDEPARTMENTS = "SELECT * FROM departments";
-    private static final String QUERYPOSITIONS = "SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name"
-      + " FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId";
 
     public ViewEmployeeData () {
         retrieve = new DBRetrieve();
@@ -56,17 +51,13 @@ public class ViewEmployeeData {
         print = new PrintDisplay();
         validation = new InputValidation();
 
-        dbConnection = null;
-        data = null;
-        exitViewMenu = false;
         invalidSearchParameter = false;
     }
 
     public void viewEmployeeInformation () {
         ViewEmployeeData view = new ViewEmployeeData();
 
-        boolean databaseIsEmpty = false;
-
+        boolean exitViewMenu = false;
         while (!exitViewMenu) {
             System.out.println("Sort by:\t(1) ID\t\t(2) First Name\t(3) Middle Name\n\t\t(4) Last Name\t(5) Birth Date\t(6) Hire Date\n\t\t(7) Position\t(8) Department\t(9) Salary");
             System.out.print("Enter number of Sort Parameter: ");
@@ -77,9 +68,8 @@ public class ViewEmployeeData {
             exitViewMenu = sort.exitViewMenu();
         }
 
-        databaseIsEmpty = retrieve.resultIsEmpty(DBRetrieve.getQuery("queryAllData"));
         view.showData(DBRetrieve.getQuery("queryAllData") + sort.parameter());
-        if (databaseIsEmpty) {
+        if (retrieve.resultIsEmpty(DBRetrieve.getQuery("queryAllData"))) {
             System.out.println("Database is Empty!");
         }
     }
@@ -97,44 +87,86 @@ public class ViewEmployeeData {
     }
 
     public void showData (String query) {
-        List<List<String>> databaseData = retrieveFromDb.getData(query);
+        EmployeeDataValidation validate = new EmployeeDataValidation();
 
-        if (databaseData.isEmpty()){
-            System.out.println("\nNo Result Found!");
-            invalidSearchParameter = true;                
-        } else {
-            print.printDatabaseData(databaseData);
-        }
+        Integer beginning = 0;
+        String range = new String();
+
+        range = validate.number("Show how many Employees?: ");
+
+        String showMore = "y";
+        boolean exit = false;
+        while (!exit) {
+
+            if (showMore.equals("y")) {
+                List<List<String>> databaseData = retrieveFromDb.getData(query + " LIMIT " + beginning.toString() + ", " + range);
+
+                if (databaseData.isEmpty() && beginning.equals("0")){
+                    System.out.println("\nNo Result Found!");
+
+                    invalidSearchParameter = true;           
+
+                    break;
+                } else if (databaseData.isEmpty() && !beginning.equals("0")) {
+                    System.out.println("No more data");
+                    break;
+                } else if (databaseData.size() < Integer.valueOf(range)) {
+                    print.printDatabaseData(databaseData);
+
+                    break;
+                } else {
+                    print.printDatabaseData(databaseData);
+
+                    beginning += Integer.valueOf(range);
+                }
+            } else if (showMore.equals("n")) {
+                exit = true;
+                break;
+            } else {
+                System.out.println("Invalid input. Choose only between 'y' (yes) and 'n' (no)");
+            }
+            System.out.print("Show more? y/n: ");
+
+            showMore = input.nextLine();
+        } 
 
     }
 
     public void viewSortedPosition () {
         ViewEmployeeData view = new ViewEmployeeData();
-        String positionSort = " ";
+        String positionSort = new String();
+
         boolean exit = false;
         while (!exit) {
             System.out.print("Sort by (1) Position Name or (2) Department Name: ");
-            userChoice = input.nextLine().trim();
+
             exit = true;
+
+            userChoice = input.nextLine().trim();
             if (userChoice.equals("1")) {
                 positionSort = " ORDER BY employeePosition.position_name ASC";
             } else if (userChoice.equals("2")) {
                 positionSort = " ORDER BY departments.dept_name ASC";
             } else {
                 System.out.println("Invalid input!");
+
                 exit = false;
            }
         }
-        view.showData(QUERYPOSITIONS + positionSort);
+
+        view.showData(DBRetrieve.getQuery("queryPositions") + positionSort);
     }
 
     public void viewSortedDepartments () {
         ViewEmployeeData view = new ViewEmployeeData();
-        String departmentSort = " ";
+        String departmentSort = new String();
+
         boolean exit = false;
         while (!exit) {
             System.out.print("Sort (1) Ascending or (2) Descending: ");
+
             userChoice = input.nextLine().trim();
+
             exit = true;
             if (userChoice.equals("1")) {
                 departmentSort = " ORDER BY departments.dept_name ASC";
@@ -142,16 +174,21 @@ public class ViewEmployeeData {
                 departmentSort = " ORDER BY departments.dept_name DESC";
             } else {
                 System.out.println("Invalid input!");
+
                 exit = false;
            }
         }
-        view.showData(QUERYDEPARTMENTS + departmentSort);
+
+        view.showData(DBRetrieve.getQuery("queryDepartments") + departmentSort);
     }
 
     public String fieldsToDisplay () {
         String fieldNumbers = "0";
+
+        System.out.println("Choose which fields to print:\n\t\t(1) Id\t\t(2) Name\t(3) Gender\n\t\t(4) Birth Date\t(5) Hire Date\t(6) Position");
+        System.out.println("\t\t(7) Department\t(8) Salary\t(9) Email");
+
         boolean exit = false;
-        System.out.println("Choose which fields to print:\n\t\t(1) Id\t\t(2) Name\t(3) Gender\n\t\t(4) Birth Date\t(5) Hire Date\t(6) Position\n\t\t(7) Department\t(8) Salary\t(9) Email");
         while (!exit) {
         System.out.print("Enter the numbers with no spaces: ");
             userChoice = input.nextLine();
@@ -184,15 +221,19 @@ public class ViewEmployeeData {
                     fieldNumbers = fieldNumbers.concat("9");
                 }
                 System.out.println(fieldNumbers);
+
                 exit = true;
+
                 if (fieldNumbers.equals("0")) {
                     System.out.println("Please choose a field to display.");
+
                     exit = false;
                 }
             } else {
                 exit = false;
             }
         }
+
         return fieldNumbers;
     }
 

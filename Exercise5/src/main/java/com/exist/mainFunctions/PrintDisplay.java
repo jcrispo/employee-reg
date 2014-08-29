@@ -64,7 +64,23 @@ public class PrintDisplay {
     public void printDatabaseData (List<List<String>> databaseData) {
         for (List<String> columnData : databaseData) {
             for (String data : columnData) {
-                System.out.format("| %-15s", data);
+                if (columnData.indexOf(data) == 0) {
+                    System.out.format("| %-5s", data + " ");
+                } else if (columnData.indexOf(data) == 1 || columnData.indexOf(data) == 2 || columnData.indexOf(data) == 3) {
+                    System.out.format("| %-20s", data);
+                } else if (columnData.indexOf(data) == 4 || columnData.indexOf(data) == 6) {
+                    System.out.format("| %-11s", data);
+                } else if (columnData.indexOf(data) == 5) {
+                    System.out.format("| %-7s", data);
+                } else if (columnData.indexOf(data) == 7) {
+                    System.out.format("| %-16s", data);
+                } else if (columnData.indexOf(data) == 8) {
+                    System.out.format("| %-21s", data);
+                } else if (columnData.indexOf(data) == 9) {
+                    System.out.format("| %-10s", data);
+                } else {
+                    System.out.format("| %-10s", data);
+                }
             }
             System.out.println();
         }
