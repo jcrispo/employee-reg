@@ -7,30 +7,24 @@ import com.exist.database.DBDelete;
 import com.exist.database.DBRetrieve;
 
 public class DeleteDelete extends DeleteMenu {
-    private InputValidation validation;
-    private ViewEmployeeData view;
-    private DBDelete delDB;
-    private Scanner input;
-    private static String userInput;
-    private static boolean exitDeleteConfirmation;
     private static final String deleteStatement = "DELETE FROM personalInfo";
     private static final String condition = " WHERE personalInfo.employeeId = ";
 
-    public DeleteDelete () {
-        validation = new InputValidation();
-        delDB = new DBDelete();
-        view = new ViewEmployeeData();
-        input = new Scanner(System.in);
-        exitDeleteConfirmation = false;
-    }
+    public void execute(String employeeNumber) {
+        ViewEmployeeData view = new ViewEmployeeData();
 
-    public void execute (String employeeNumber) {
         view.showDataNoLimit(DBRetrieve.getQuery("queryAllData") + condition + employeeNumber + ";");
+
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
 
             view.setInvalidSearchToDefault();
         } else {
+            DBDelete delDB = new DBDelete();
+            Scanner input = new Scanner(System.in);
+            String userInput = new String();
+
+            boolean exitDeleteConfirmation = false;
             while (!exitDeleteConfirmation) {
                 System.out.print("\nConfirm deletion of data? 'y'/'n': ");
 
@@ -49,7 +43,8 @@ public class DeleteDelete extends DeleteMenu {
 
     }
 
-    public boolean exitDeleteMenu () {
+    public boolean exitDeleteMenu() {
         return true;
     }
+
 }

@@ -4,20 +4,18 @@ import java.util.Scanner;
 import com.exist.mainFunctions.ViewEmployeeData;
 
 public class View extends EmployeeRegistrationMenu {
-    private static ViewEmployeeData view;
-    private static Scanner input;
 
-    public View () {
-        view = new ViewEmployeeData();
-        input = new Scanner(System.in);
-    }
+    public void execute() {
+        ViewEmployeeData view = new ViewEmployeeData();
+        Scanner input = new Scanner(System.in);
+        String userInput = new String();
 
-    public void execute () {
         boolean exit = false;
-        String userInput;
         while (!exit) {
             System.out.print("View (1) Employee Data, (2) List of Positions, (3) List of Departments:  ");
+
             userInput = input.nextLine().trim();
+
             exit = true;
             if (userInput.equals("1")) {
                 view.viewEmployeeInformation();
@@ -27,18 +25,19 @@ public class View extends EmployeeRegistrationMenu {
                 view.viewSortedDepartments();
             } else {
                 System.out.println("Invalid input!");
+
                 exit = false;
             }
         }
+
     }
 
-    public boolean showDatabase () {
+    public boolean showDatabase() {
         return true;
     }
 
-    public boolean exitMenu () {
+    public boolean exitMenu() {
         return false;
     }
 
 }
-

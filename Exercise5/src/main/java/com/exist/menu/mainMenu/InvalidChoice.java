@@ -2,17 +2,16 @@ package com.exist.menu.mainMenu;
 
 public class InvalidChoice extends EmployeeRegistrationMenu {
 
-    public void execute () {
+    public void execute() {
         System.out.println("Invalid Input!");
     }
 
-    public boolean showDatabase () {
+    public boolean showDatabase() {
         return false;
     }
 
-    public boolean exitMenu () {
+    public boolean exitMenu() {
         return false;
     }
 
 }
-

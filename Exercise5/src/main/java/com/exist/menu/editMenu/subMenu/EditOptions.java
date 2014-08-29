@@ -14,7 +14,7 @@ public abstract class EditOptions extends EditMenu {
     private static final int EXIT = 9;
     private static final int BLANK = 0;
 
-    public static EditMenu choice (String userInput) {
+    public static EditMenu choice(String userInput) {
         InputValidation inputValidity = new InputValidation();
 
         int userNumberInput = BLANK;
@@ -23,32 +23,43 @@ public abstract class EditOptions extends EditMenu {
             userNumberInput = Integer.parseInt(userInput);
         }
         if (userNumberInput == FIRSTNAME) {
+
             return new EditFirstName();
         } else if (userNumberInput == MIDDLENAME) {
+
             return new EditMiddleName();
         } else if (userNumberInput == LASTNAME) {
+
             return new EditLastName();
         } else if (userNumberInput == BIRTHDATE) {
+
             return new EditBirthDate();
         } else if (userNumberInput == GENDER) {
+
             return new EditGender();
         } else if (userNumberInput == HIREDATE) {
+
             return new EditHireDate();
         } else if (userNumberInput == POSITION) {
+
             return new EditPosition();
         } else if (userNumberInput == SALARY) {
+
             return new EditSalary();
         } else if (userNumberInput == EXIT) {
+
             return new EditExit();
         } else {
             if (userNumberInput < BLANK || userNumberInput > 8) {
                 System.out.println("Invalid input!");
             }
+
             return new EditInvalid();
         }
+
     }
 
-    public abstract void execute (String employeeNumberInput);
-    public abstract boolean exitEditMenu ();
+    public abstract void execute(String employeeNumberInput);
+    public abstract boolean exitEditMenu();
 
 }

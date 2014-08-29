@@ -2,11 +2,11 @@ package com.exist.menu.sortMenu;
 
 public class SortInvalid extends SortMenu {
 
-    public String parameter () {
+    public String parameter() {
         return " ";
     }
 
-    public boolean exitViewMenu () {
+    public boolean exitViewMenu() {
         return false;
     }
 

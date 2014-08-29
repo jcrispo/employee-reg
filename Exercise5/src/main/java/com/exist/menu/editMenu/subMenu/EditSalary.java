@@ -8,7 +8,7 @@ public class EditSalary extends EditMenu {
     private static final String updateSql = "UPDATE companyEmployeeData SET basicSalary = \'";
     private static final String conditionSql = "\' WHERE companyEmployeeData.employeeId = ";
 
-    public void execute (String employeeNumberInput) {
+    public void execute(String employeeNumberInput) {
         Scanner input = new Scanner(System.in);
         DBInsert dbInsert = new DBInsert();
         EmployeeDataValidation validate = new EmployeeDataValidation();
@@ -17,7 +17,7 @@ public class EditSalary extends EditMenu {
         dbInsert.editData(updateSql + userInput + conditionSql + employeeNumberInput);
     }
 
-    public boolean exitEditMenu () {
+    public boolean exitEditMenu() {
         return false;
     }
 
