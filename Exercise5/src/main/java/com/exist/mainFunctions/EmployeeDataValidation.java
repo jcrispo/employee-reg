@@ -1,8 +1,6 @@
 package com.exist.mainFunctions;
 
 import java.util.Scanner;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Calendar;
@@ -18,7 +16,6 @@ public class EmployeeDataValidation {
     private static final Calendar currentDate = Calendar.getInstance();
     private static final int LIMIT = 25;
     private static final String INVALID = "\nInvalid Input!";
-    private static boolean inputIsValid = false;
 
     public EmployeeDataValidation () {
         validate = new InputValidation();

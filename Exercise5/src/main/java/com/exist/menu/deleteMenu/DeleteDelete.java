@@ -28,13 +28,16 @@ public class DeleteDelete extends DeleteMenu {
         view.showDataNoLimit(DBRetrieve.getQuery("queryAllData") + condition + employeeNumber + ";");
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");
+
             view.setInvalidSearchToDefault();
         } else {
             while (!exitDeleteConfirmation) {
                 System.out.print("\nConfirm deletion of data? 'y'/'n': ");
+
                 userInput = input.nextLine().trim();
                 if (userInput.equals("y")) {
                     delDB.deleteFromDb(deleteStatement + condition + employeeNumber + ";");
+
                     exitDeleteConfirmation = true;
                 } else if (userInput.equals("n")) {
                     exitDeleteConfirmation = true;
@@ -43,6 +46,7 @@ public class DeleteDelete extends DeleteMenu {
                 }
             }
         }
+
     }
 
     public boolean exitDeleteMenu () {

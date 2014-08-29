@@ -41,10 +41,6 @@ public class DBDataSource {
                 System.exit(0);
             }
         }
-        System.out.println("Max Idle: " + bds.getMaxIdle());
-        System.out.println("Max Active: " + bds.getMaxTotal());
-        System.out.println("Idle: " + bds.getNumIdle());
-        System.out.println("Active: " + bds.getNumActive());
 
         return ds;
     }

@@ -48,9 +48,11 @@ public class EmployeeRegistration {
 
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
+
             System.out.println("Login to Database Successful\n");
         } catch (SQLException e) {
             System.out.println("Wrong Username / Password! ");
+
             e.printStackTrace();
             System.exit(0);
         } finally {

@@ -27,9 +27,6 @@ public class InputValidation {
     private static final int DECEMBER = 12;
     private static final String DAY_INPUT_INVALID = "\nInput Invalid. Value may be exceeding the number of Days in this given Month or is less than 1.\nPlease try Again\n";
 
-    public InputValidation () {
-    }
-
     public static boolean stringIsNull (String input) {
         boolean retVal = false;
 
@@ -76,7 +73,7 @@ public class InputValidation {
     public boolean containsOnlyNumbers (String number) {
         boolean retVal = true;
 
-	if (stringIsNull(number)) {
+        if (stringIsNull(number)) {
             retVal = false; 
         } else {
             try {
