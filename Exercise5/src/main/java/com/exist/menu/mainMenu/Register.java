@@ -12,7 +12,7 @@ public class Register extends EmployeeRegistrationMenu {
 
         boolean exit = false;
         while (!exit) {
-            System.out.print("View (1) Add New Employee Data, (2) Add New Position, (3) Add New Department:  ");
+            System.out.print("View (1) Add New Employee Data, (2) Add New Position, (3) Add New Department, (4) Populate Database with 10000+ Data:  ");
 
             userInput = input.nextLine().trim();
 
@@ -23,6 +23,8 @@ public class Register extends EmployeeRegistrationMenu {
                 register.addNewPosition();
             } else if (userInput.equals("3")){
                 register.addNewDepartment();
+            } else if (userInput.equals("4")){
+                register.addRandomData();
             } else {
                 System.out.println("Invalid input!");
 
