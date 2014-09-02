@@ -3,7 +3,6 @@ package com.exist.mainFunctions;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.Formatter;
 import java.util.Scanner;
 import java.util.List;
@@ -21,9 +20,10 @@ public class ViewEmployeeData {
     private DBRetrieve retrieve;
     private Retrieve retrieveFromDb;
     private PrintDisplay print;
-    private SortMenu sort;
+    private static SortMenu sort;
     private Scanner input;
     private InputValidation validation;
+    private static String sortParameter;
     private static String userChoice;
     private static boolean invalidSearchParameter;
     private static final String ID = "ID ";
@@ -43,6 +43,7 @@ public class ViewEmployeeData {
     private static final String POSITIONDISPLAYFORMAT = "|%7s| %-20s| %-21s |\n";
     private static final String DEPARTMENTDISPLAYFORMAT = "|%7s| %-21s |\n";
     private static final String QUERYDEPARTMENTS = "SELECT * FROM departments";
+    private static final String queryAllData = "SELECT personalInfo.employeeId AS ID, personalInfo.firstName AS 'First Name', personalInfo.middleName AS 'Middle Name', personalInfo.lastName AS 'Last Name', personalInfo.birthDate AS 'Birth Date', personalInfo.gender AS 'Gender', company.hireDate AS 'Hire Date', company.position_name AS 'Position', company.dept_name AS 'Department', company.basicSalary AS 'Salary', company.emailId AS 'Email' FROM personalInfo LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name, companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData LEFT JOIN (SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition LEFT JOIN departments ON employeePosition.deptId=departments.deptId) AS posdept ON companyEmployeeData.position_refId=posdept.position_refId";
 
     public ViewEmployeeData () {
         retrieve = new DBRetrieve();
@@ -68,9 +69,12 @@ public class ViewEmployeeData {
             exitViewMenu = sort.exitViewMenu();
         }
 
-        view.showData(DBRetrieve.getQuery("queryAllData") + sort.parameter());
-        if (retrieve.resultIsEmpty(DBRetrieve.getQuery("queryAllData"))) {
+        sortParameter = sort.parameter();
+
+        view.showData(retrieve.getQuery(sort.queryA()));
+        if (invalidSearchParameter) {
             System.out.println("Database is Empty!");
+            invalidSearchParameter = false;
         }
     }
 
@@ -92,6 +96,8 @@ public class ViewEmployeeData {
         Integer beginning = 0;
         String range = new String();
 
+        System.out.println(sort.queryA() + " " + sort.queryB());
+
         range = validate.number("Show how many rows of data?: ");
 
         String showMore = "y";
@@ -99,7 +105,7 @@ public class ViewEmployeeData {
         while (!exit) {
 
             if (showMore.equals("y")) {
-                List<List<String>> databaseData = retrieveFromDb.getData(query + " LIMIT " + beginning.toString() + ", " + range);
+                List<List<String>> databaseData = retrieve.getData(query + sortParameter + " LIMIT " + beginning.toString() + ", " + range + ") " + retrieve.getQuery(sort.queryB()));
 
                 if (databaseData.isEmpty() && beginning.equals("0")){
                     System.out.println("\nNo Result Found!");
@@ -128,7 +134,7 @@ public class ViewEmployeeData {
             System.out.print("\nShow more? y/n: ");
 
             showMore = input.nextLine();
-        } 
+        }
 
     }
 

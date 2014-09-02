@@ -1,6 +1,7 @@
 package com.exist.menu.sortMenu;
 
 import java.util.Scanner;
+import com.exist.database.DBRetrieve;
 
 public class SortMiddleName extends SortMenu {
 
@@ -17,11 +18,11 @@ public class SortMiddleName extends SortMenu {
             userInput = input.nextLine().trim();
 
             if (userInput.equals("1")) {
-                returnValue = " ORDER BY personalInfo.middleName ASC";
+                returnValue = " " + DBRetrieve.getQuery("sortmNameA") + " ";
 
                 exit = true;
             } else if (userInput.equals("2")) {
-                returnValue = " ORDER BY personalInfo.middleName DESC";
+                returnValue = " " + DBRetrieve.getQuery("sortmNameD") + " ";
 
                 exit = true;
             } else {
@@ -30,6 +31,14 @@ public class SortMiddleName extends SortMenu {
         }
 
         return returnValue;
+    }
+
+    public String queryA() {
+        return "queryDataLimitA";
+    }
+    
+    public String queryB() {
+        return "queryDataLimitB";
     }
 
     public boolean exitViewMenu() {

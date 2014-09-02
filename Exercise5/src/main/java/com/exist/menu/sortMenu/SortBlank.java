@@ -6,6 +6,14 @@ public class SortBlank extends SortMenu {
         return " ";
     }
 
+    public String queryA() {
+        return " ";
+    }
+
+    public String queryB() {
+        return " ";
+    }
+
     public boolean exitViewMenu() {
         return false;
     }

@@ -1,6 +1,7 @@
 package com.exist.menu.sortMenu;
 
 import java.util.Scanner;
+import com.exist.database.DBRetrieve;
 
 public class SortId extends SortMenu {
 
@@ -17,11 +18,11 @@ public class SortId extends SortMenu {
             userInput = input.nextLine().trim();
 
             if (userInput.equals("1")) {
-                returnValue = " ORDER BY personalInfo.employeeId ASC";
+                returnValue = " " + DBRetrieve.getQuery("sortIdA") + " ";
 
                 exit = true;
             } else if (userInput.equals("2")) {
-                returnValue = " ORDER BY personalInfo.employeeId DESC";
+                returnValue = " " + DBRetrieve.getQuery("sortIdD") + " ";
 
                 exit = true;
             } else {
@@ -31,6 +32,15 @@ public class SortId extends SortMenu {
 
         return returnValue;
     }
+
+    public String queryA() {
+        return "queryDataLimitA";
+    }
+    
+    public String queryB() {
+        return "queryDataLimitB";
+    }
+
 
     public boolean exitViewMenu() {
         return true;
