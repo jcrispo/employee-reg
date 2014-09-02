@@ -51,7 +51,7 @@ public class EmployeeRegistration {
 
             System.out.println("Login to Database Successful\n");
         } catch (SQLException e) {
-            System.out.println("Wrong Username / Password! ");
+            System.out.println("Wrong Username / Password/ or Database URL! ");
 
             e.printStackTrace();
             System.exit(0);
