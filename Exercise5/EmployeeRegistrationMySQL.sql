@@ -1,38 +1,39 @@
 CREATE DATABASE Employee_Registration;
 USE Employee_Registration;
 
-CREATE TABLE personalInfo (
-    employeeId INT NOT NULL AUTO_INCREMENT,
-    firstName VARCHAR(25) NOT NULL,
-    middleName VARCHAR(25) NOT NULL,
-    lastName VARCHAR(25) NOT NULL,
-    gender VARCHAR(7),
-    birthDate DATE,
-    PRIMARY KEY (employeeId)
-) ENGINE=InnoDB;
 CREATE TABLE departments (
     deptId INT NOT NULL AUTO_INCREMENT,
-    dept_name VARCHAR(50) NOT NULL UNIQUE,
+    dept_name VARCHAR(20) NOT NULL UNIQUE,
     PRIMARY KEY (deptId)
 ) ENGINE=InnoDB;
 CREATE TABLE employeePosition (
     position_refId INT NOT NULL AUTO_INCREMENT,
-    position_name VARCHAR(50) NOT NULL UNIQUE,
+    position_name VARCHAR(20) NOT NULL UNIQUE,
     deptId INT,
     PRIMARY KEY (position_refId),
     FOREIGN KEY (deptId) REFERENCES departments(deptId)
+) ENGINE=InnoDB;
+CREATE TABLE personalInfo (
+    employeeId INT NOT NULL AUTO_INCREMENT,
+    firstName VARCHAR(20) NOT NULL,
+    middleName VARCHAR(20) NOT NULL,
+    lastName VARCHAR(20) NOT NULL,
+    gender VARCHAR(7),
+    birthDate DATE,
+    PRIMARY KEY (employeeId),
+    UNIQUE (firstName, middleName, lastName, birthDate)
 ) ENGINE=InnoDB;
 CREATE TABLE companyEmployeeData (
     employeeId INT NOT NULL AUTO_INCREMENT,
     position_refId INT NOT NULL,
     hireDate DATE NOT NULL,
     basicSalary DECIMAL(10,2),
-    emailId VARCHAR(30) UNIQUE,
+    emailId VARCHAR(20) UNIQUE,
     PRIMARY KEY (employeeId),
     FOREIGN KEY (employeeId) REFERENCES personalInfo(employeeId) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB;
 SHOW TABLES;
-INSERT INTO departments (dept_name) VALUES ('accounting department');
+INSERT INTO departments (dept_name) VALUES ('accounting');
 INSERT INTO departments (dept_name) VALUES ('public relations');
 INSERT INTO departments (dept_name) VALUES ('development');
 INSERT INTO departments (dept_name) VALUES ('administrative');
@@ -53,6 +54,7 @@ INSERT INTO employeePosition (position_name, deptId) VALUES ('cfo', 4);
 INSERT INTO employeePosition (position_name, deptId) VALUES ('ceo', 4);
 INSERT INTO employeePosition (position_name) VALUES ('janitor');
 SELECT * FROM employeePosition;
+/*
 INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES ('jason ray','ibanez','crispo','male','1988-07-04');
 INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES ('robert','james','abbatacola','male','1984-05-13');
 INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES ('joseph','kurt','burton','male','1975-09-01');
@@ -80,27 +82,21 @@ INSERT INTO companyEmployeeData (position_refId, hireDate) VALUES (1,'2014-07-04
 INSERT INTO companyEmployeeData (position_refId, hireDate) VALUES (9,'2014-07-04');
 SELECT * FROM companyEmployeeData;
 
-/*
 
-SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate, personalInfo.gender, company.hireDate, company.position_name, company.dept_name
-FROM personalInfo
-    RIGHT JOIN (
-        SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name, posdept.dept_name,
-        FROM companyEmployeeData
-        RIGHT JOIN (
-            SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name 
-            FROM employeePosition 
-            LEFT JOIN departments ON employeePosition.deptId=departments.deptId
-        ) AS posdept
-        ON companyEmployeeData.position_refId=posdept.position_refId
-    ) AS company
-    ON personalInfo.employeeId=company.employeeId
-ORDER BY personalInfo.employeeId;
-
+SELECT e.employeeId, e.firstName, e.middleName, e.lastName, e.gender, e.birthDate, e.position_name, d.dept_name, e.hireDate, e.basicSalary, e.emailId FROM departments AS d RIGHT JOIN (SELECT empData.employeeId, empData.emailId, empData.firstName, empData.middleName, empData.lastName, empData.gender, empData.birthDate, empData.hireDate, empData.basicSalary, pos.position_name, pos.deptId FROM employeePosition AS pos RIGHT JOIN (SELECT empd.employeeId, empd.firstName, empd.middleName, empd.lastName, empd.birthDate, empd.gender, companyEmployeeData.hireDate, companyEmployeeData.basicSalary, companyEmployeeData.emailId, companyEmployeeData.position_refId FROM companyEmployeeData RIGHT JOIN (SELECT emp.employeeId, emp.firstName, emp.middleName, emp.lastName, emp.birthDate, emp.gender FROM personalInfo AS emp ORDER BY emp.employeeID LIMIT 0, 100) AS empd ON companyEmployeeData.employeeId = empd.employeeId) AS empData ON empData.position_refId = pos.position_refId) AS e ON e.deptId = d.deptId
 
 SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate, personalInfo.gender, company.hireDate, company.position_name, company.dept_name, company.basicSalary, company.emailId FROM personalInfo LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name, companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData LEFT JOIN (SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition LEFT JOIN departments ON employeePosition.deptId=departments.deptId) AS posdept ON companyEmployeeData.position_refId=posdept.position_refId) AS company ON personalInfo.employeeId=company.employeeId ORDER BY personalInfo.employeeId;
 
 SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId;
+
+SELECT personalInfo.employeeId, personalInfo.firstName, personalInfo.middleName, personalInfo.lastName, personalInfo.birthDate, personalInfo.gender, company.hireDate, company.position_name, company.dept_name, company.basicSalary, company.emailId FROM personalInfo 
+    LEFT JOIN (SELECT companyEmployeeData.employeeId, companyEmployeeData.hireDate, posdept.position_refId, posdept.position_name,  posdept.dept_name, companyEmployeeData.basicSalary, companyEmployeeData.emailId FROM companyEmployeeData 
+        LEFT JOIN (SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition 
+            LEFT JOIN departments 
+            ON employeePosition.deptId=departments.deptId) 
+        AS posdept ON companyEmployeeData.position_refId=posdept.position_refId) 
+    AS company ON personalInfo.employeeId=company.employeeId ORDER BY personalInfo.employeeId LIMIT 0, 1000;
+
 
 SELECT * FROM employeePosition INNER JOIN departments ON employeePosition.deptId=departments.deptId ORDER BY employeePosition.position_refId;
 SELECT * FROM employeePosition RIGHT JOIN departments ON employeePosition.deptId=departments.deptId ORDER BY employeePosition.position_refId;

@@ -2,6 +2,7 @@ package com.exist.menu.mainMenu;
 
 import java.util.Scanner;
 import com.exist.mainFunctions.AddData;
+import com.exist.database.DBInsert;
 
 public class Register extends EmployeeRegistrationMenu {
 
@@ -9,6 +10,7 @@ public class Register extends EmployeeRegistrationMenu {
         AddData register = new AddData();
         Scanner input = new Scanner(System.in);
         String userInput = new String();
+        DBInsert dbIn = new DBInsert();
 
         boolean exit = false;
         while (!exit) {
@@ -24,7 +26,7 @@ public class Register extends EmployeeRegistrationMenu {
             } else if (userInput.equals("3")){
                 register.addNewDepartment();
             } else if (userInput.equals("4")){
-                register.addRandomData();
+                dbIn.addRandomData();
             } else {
                 System.out.println("Invalid input!");
 
