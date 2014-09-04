@@ -70,11 +70,14 @@ public class DBRetrieve implements Retrieve {
             if (resultSet.isBeforeFirst()){
                 ResultSetMetaData metaData = resultSet.getMetaData();
                 List<String> columnLabels = new ArrayList<String>();
+                List<String> columnDisplaySize = new ArrayList<String>();
 
                 for (int columnIndex = 1; columnIndex <= metaData.getColumnCount(); columnIndex++) {
                     columnLabels.add(metaData.getColumnLabel(columnIndex));
+                    columnDisplaySize.add(String.valueOf(metaData.getPrecision(columnIndex)));
                 }
 
+                retVal.add(columnDisplaySize);
                 retVal.add(columnLabels);
 
                 while (resultSet.next()) {

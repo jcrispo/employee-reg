@@ -14,7 +14,7 @@ public class EmployeeDataValidation {
     private Scanner userInput;
     private DBRetrieve fromDatabase;
     private static final Calendar currentDate = Calendar.getInstance();
-    private static final int LIMIT = 25;
+    private static final int LIMIT = 20;
     private static final String INVALID = "\nInvalid Input!";
 
     public EmployeeDataValidation () {
@@ -153,22 +153,6 @@ public class EmployeeDataValidation {
         System.out.print(print);
 
         returnValue = userInput.nextLine().trim();
-
-        return returnValue;
-    }
-
-    public String departments (String print) {
-        String returnValue = new String();
-
-        boolean inputIsValid = false;
-        while (!inputIsValid) {
-            System.out.print(print);
-
-            returnValue = userInput.nextLine().trim();
-            if (validate.containsOnlyLetters(returnValue)) {
-                inputIsValid = true;
-            }
-        }
 
         return returnValue;
     }

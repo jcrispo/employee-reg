@@ -64,28 +64,18 @@ public class PrintDisplay {
     public void printDatabaseData (List<List<String>> databaseData) {
         System.out.println();
 
-        for (List<String> columnData : databaseData) {
-            for (String data : columnData) {
-                if (columnData.indexOf(data) == 0) {
-                    System.out.format("| %-5s", data + " ");
-                } else if (columnData.indexOf(data) == 1 || columnData.indexOf(data) == 2 || columnData.indexOf(data) == 3) {
-                    System.out.format("| %-20s", data);
-                } else if (columnData.indexOf(data) == 4 || columnData.indexOf(data) == 6) {
-                    System.out.format("| %-11s", data);
-                } else if (columnData.indexOf(data) == 5) {
-                    System.out.format("| %-7s", data);
-                } else if (columnData.indexOf(data) == 7) {
-                    System.out.format("| %-16s", data);
-                } else if (columnData.indexOf(data) == 8) {
-                    System.out.format("| %-21s", data);
-                } else if (columnData.indexOf(data) == 9) {
-                    System.out.format("| %-10s", data);
-                } else {
-                    System.out.format("| %-10s", data);
-                }
+        List<String> columnWidth = databaseData.remove(0);
+        for (List<String> row : databaseData) {
+
+            int columnIndex = 0;
+            for (String column : row) {
+                System.out.format("|%-" + columnWidth.get(columnIndex) + "s", column);
+
+                columnIndex++;
             }
             System.out.println();
         }
+
     }
 
 }

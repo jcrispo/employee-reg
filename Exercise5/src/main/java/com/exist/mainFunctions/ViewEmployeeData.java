@@ -20,9 +20,9 @@ public class ViewEmployeeData {
     private DBRetrieve retrieve;
     private Retrieve retrieveFromDb;
     private PrintDisplay print;
-    private static SortMenu sort;
     private Scanner input;
     private InputValidation validation;
+    private static SortMenu sort;
     private static String sortParameter;
     private static String userChoice;
     private static boolean invalidSearchParameter;
@@ -95,8 +95,6 @@ public class ViewEmployeeData {
 
         Integer beginning = 0;
         String range = new String();
-
-        System.out.println(sort.queryA() + " " + sort.queryB());
 
         range = validate.number("Show how many rows of data?: ");
 
