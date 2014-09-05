@@ -17,6 +17,7 @@ public class Register extends EmployeeRegistrationMenu {
             System.out.print("View (1) Add New Employee Data, (2) Add New Position, (3) Add New Department, (4) Populate Database with 10000+ Data:  ");
 
             userInput = input.nextLine().trim();
+            System.out.println();
 
             exit = true;
             if (userInput.equals("1")) {
