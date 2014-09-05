@@ -17,7 +17,7 @@ public class EditMenu1Edit extends EditMenu1 {
 
         boolean exitEditMenu = false;
         while (!exitEditMenu) {
-            view.showDataNoLimit(DBRetrieve.getQuery("queryAllData") + condition);
+            view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL") + condition);
 
             if (view.invalidSearch()) {
                 System.out.println("User ID does not exist!");
@@ -30,6 +30,7 @@ public class EditMenu1Edit extends EditMenu1 {
                 System.out.print("\t(6) Hire Date\n\t(7) Position\t(8) Salary\t(9) Cancel\nEnter option: ");
 
                 userChoice = (userInput.nextLine()).trim();
+
                 EditMenu menu = EditOptions.choice(userChoice);
                 menu.execute(employeeNumberInput);
                 exitEditMenu = menu.exitEditMenu();

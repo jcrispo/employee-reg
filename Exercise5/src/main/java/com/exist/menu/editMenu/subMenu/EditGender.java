@@ -9,11 +9,11 @@ public class EditGender extends EditMenu {
     private static final String conditionSql = "\' WHERE personalInfo.employeeId = ";
 
     public void execute(String employeeNumberInput) {
-        Scanner input = new Scanner(System.in);
-        DBInsert dbInsert = new DBInsert();
         EmployeeDataValidation validate = new EmployeeDataValidation();
+        DBInsert dbInsert = new DBInsert();
 
         String userInput = validate.gender("Gender 'm'/'f': ");
+
         dbInsert.editData(updateSql + userInput + conditionSql + employeeNumberInput);
     }
 

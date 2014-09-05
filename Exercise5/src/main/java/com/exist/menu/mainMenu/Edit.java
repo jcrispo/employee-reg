@@ -8,7 +8,7 @@ public class Edit extends EmployeeRegistrationMenu {
         EditEmployeeData edit = new EditEmployeeData();
 
         edit.editData();
-        //add choices for editing: a.employeedata b.positiondata c.departmentdata
+        //TODO: add choices for editing: a.employeedata b.positiondata c.departmentdata
     }
 
     public boolean showDatabase() {

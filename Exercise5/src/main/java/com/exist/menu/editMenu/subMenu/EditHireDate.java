@@ -9,11 +9,11 @@ public class EditHireDate extends EditMenu {
     private static final String conditionSql = "\' WHERE companyEmployeeData.employeeId = ";
 
     public void execute(String employeeNumberInput) {
-        Scanner input = new Scanner(System.in);
-        DBInsert dbInsert = new DBInsert();
         EmployeeDataValidation validate = new EmployeeDataValidation();
+        DBInsert dbInsert = new DBInsert();
 
         String userInput = validate.dateString("Hire Date: ");
+
         dbInsert.editData(updateSql + userInput + conditionSql + employeeNumberInput);
     }
 

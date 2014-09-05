@@ -14,8 +14,7 @@ public class EmployeeDataValidation {
     private Scanner userInput;
     private DBRetrieve fromDatabase;
     private static final Calendar currentDate = Calendar.getInstance();
-    private static final int LIMIT = 20;
-    private static final String INVALID = "\nInvalid Input!";
+    private static final int WORD_LIMIT = 20;
 
     public EmployeeDataValidation () {
         validate = new InputValidation();
@@ -60,8 +59,9 @@ public class EmployeeDataValidation {
             returnValue = userInput.nextLine();
 
             inputIsValid = validate.containsOnlyLetters(returnValue);
+
             if (inputIsValid) {
-                inputIsValid = validate.belowCharLimit(returnValue, LIMIT);
+                inputIsValid = validate.belowCharLimit(returnValue, WORD_LIMIT);
             }
         }
 
@@ -76,6 +76,7 @@ public class EmployeeDataValidation {
             System.out.print(print);
 
             returnValue = userInput.nextLine().trim();
+
             if (returnValue.equals("m")) {
                 returnValue = "male";
 
@@ -85,7 +86,7 @@ public class EmployeeDataValidation {
 
                 inputIsValid = true;
             } else {
-                System.out.println(INVALID);
+                System.out.println("Invalid input. Please only choose between 'm' and 'f'. ");
             }
         }
 
@@ -102,7 +103,9 @@ public class EmployeeDataValidation {
             returnValue = userInput.nextLine().trim();
 
             if (validate.containsOnlyNumbers(returnValue)) {
+
                 resultIsEmpty = fromDatabase.resultIsEmpty(query + returnValue);
+
                 if (resultIsEmpty){
                     System.out.println("ID number does not exist. Try again");
                 }
@@ -120,8 +123,11 @@ public class EmployeeDataValidation {
             System.out.print(print);
 
             returnValue = userInput.nextLine().trim();
-            if (validate.containsOnlyLetters(returnValue) && validate.belowCharLimit(returnValue, LIMIT)) {
+
+            if (validate.containsOnlyLetters(returnValue) && validate.belowCharLimit(returnValue, WORD_LIMIT)) {
+
                 resultIsEmpty = fromDatabase.resultIsEmpty(query + returnValue + "\'");
+
                 if (!resultIsEmpty){
                     System.out.println("Data already exists!");
                 }
@@ -139,6 +145,7 @@ public class EmployeeDataValidation {
             System.out.print(print);
 
             returnValue = userInput.nextLine().trim();
+
             if (validate.containsOnlyNumbers(returnValue)) {
                 inputIsValid = true;
             }

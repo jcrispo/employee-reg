@@ -8,7 +8,7 @@ public class Delete extends EmployeeRegistrationMenu {
         DeleteEmployeeData delete = new DeleteEmployeeData();
 
         delete.deleteEmployeeInfo();
-        //add delete choices to delete from position & department tables
+        //TODO: add delete choices to delete from position & department tables
     }
 
     public boolean showDatabase() {

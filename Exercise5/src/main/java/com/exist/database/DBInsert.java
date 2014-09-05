@@ -19,10 +19,6 @@ import com.exist.database.DBRetrieve;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class DBInsert {
-    private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
-    private static final String sqlStatement2B = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) values (?, ?, ?, ?)";
-    private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
-    private static final String sqlStatement4 = "INSERT INTO departments (dept_name) VALUES (?)";
 
     public void editData (String sql) {
         Connection dbConnection = null;
@@ -33,6 +29,7 @@ public class DBInsert {
 
             insertStatement = dbConnection.prepareStatement(sql);
             insertStatement.executeUpdate();
+
             insertStatement.close();
         } catch (SQLException e) {
 
@@ -92,18 +89,19 @@ public class DBInsert {
                 ex.printStackTrace();
             }
         }
+
     }
 
     public void insertEmployeeData (EmployeeData data) {
         Connection dbConnection = null;
         PreparedStatement insertStatement = null;
 
-        boolean flag = false;
+        boolean flagDuplicateEntry = false;
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
             dbConnection.setAutoCommit(false);
 
-            insertStatement = dbConnection.prepareStatement(sqlStatement1);
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_personalInfo"));
             insertStatement.setString(1, data.getFirstName());
             insertStatement.setString(2, data.getMiddleName());
             insertStatement.setString(3, data.getLastName());
@@ -111,7 +109,7 @@ public class DBInsert {
             insertStatement.setString(5, data.getBirthDate());
             insertStatement.executeUpdate();
 
-            insertStatement = dbConnection.prepareStatement(sqlStatement2B);
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_companyEmployeeData"));
             insertStatement.setString(1, data.getPosition().toString());
             insertStatement.setString(2, data.getHireDate());
             insertStatement.setString(3, data.getSalary().toString());
@@ -119,16 +117,15 @@ public class DBInsert {
             insertStatement.executeUpdate();
 
             dbConnection.commit();
-
         } catch (SQLException e) {
 
             String exception = e.toString();
             if (exception.contains("Duplicate entry")) {
                 System.out.println("Adding given data to database Failed.");
 
-                flag = true;
-
                 System.out.println((exception.split(" ", 2)[1]).split("for", 2)[0]);
+
+                flagDuplicateEntry = true;
             } else {
                 e.printStackTrace();
             }
@@ -150,13 +147,11 @@ public class DBInsert {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-                if (flag) {
+                if (flagDuplicateEntry) {
                     DBInsert dbIn = new DBInsert();
 
-                    String queryLastId = "SELECT employeeId FROM personalInfo ORDER BY employeeId DESC LIMIT 0, 1";
-
-                    dbIn.rollbackAutoIncrement(queryLastId, "personalInfo");
-                    dbIn.rollbackAutoIncrement(queryLastId, "companyEmployeeData");
+                    dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "personalInfo");
+                    dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "companyEmployeeData");
                 }
         }
 
@@ -169,7 +164,7 @@ public class DBInsert {
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
 
-            insertStatement = dbConnection.prepareStatement(sqlStatement3);
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_employeePosition"));
             insertStatement.setString(1, positionList.getPositionName());
             insertStatement.setString(2, positionList.getDeptId().toString());
             insertStatement.executeUpdate();
@@ -198,7 +193,7 @@ public class DBInsert {
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
 
-            insertStatement = dbConnection.prepareStatement(sqlStatement4);
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_departments"));
             insertStatement.setString(1, deptName);
             insertStatement.executeUpdate();
         } catch (SQLException e) {
@@ -224,15 +219,13 @@ public class DBInsert {
         PreparedStatement insertStatement = null;
         PreparedStatement insertStatement1 = null;
 
-        boolean flag = false;
+        boolean flagDuplicateEntry = false;
         try {
             dbConnection = DBDataSource.getInstance().getConnection();
             dbConnection.setAutoCommit(false);
 
-            insertStatement = dbConnection.prepareStatement(sqlStatement1);
-            insertStatement1 = dbConnection.prepareStatement(sqlStatement2B);
-
-            Random random = new Random();
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_personalInfo"));
+            insertStatement1 = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_companyEmployeeData"));
 
             String[] gender = {"male", "female"};
             String[] hireDate = {"2010-05-13", "2013-09-01", "2014-01-29", "2005-04-07", "2003-08-25", "2007-07-17", "2012-03-11", "2000-12-03", "2009-07-06", "2004-10-23", "2002-06-04"};
@@ -242,6 +235,7 @@ public class DBInsert {
             String path3 = "src/main/resources/lastnames.txt";
             String path4 = "src/main/resources/birthdates.txt";
 
+            Random random = new Random();
             int emailNumber = 0;
 
             File file1 = new File(path1);
@@ -294,7 +288,7 @@ public class DBInsert {
             if (exception.contains("Duplicate entry")) {
                 System.out.println("Adding given data to database Failed.");
 
-                flag = true;
+                flagDuplicateEntry = true;
 
                 System.out.println((exception.split(" ", 2)[1]).split("for", 2)[0]);
             } else {
@@ -323,13 +317,11 @@ public class DBInsert {
                 e.printStackTrace();
             }
 
-            if (flag) {
+            if (flagDuplicateEntry) {
                 DBInsert dbIn = new DBInsert();
 
-                String queryLastId = "SELECT employeeId FROM personalInfo ORDER BY employeeId DESC LIMIT 0, 1";
-
-                dbIn.rollbackAutoIncrement(queryLastId, "personalInfo");
-                dbIn.rollbackAutoIncrement(queryLastId, "companyEmployeeData");
+                dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "personalInfo");
+                dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "companyEmployeeData");
             }
         }
 

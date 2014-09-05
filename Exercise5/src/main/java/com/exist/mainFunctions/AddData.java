@@ -1,40 +1,23 @@
 package com.exist.mainFunctions;
 
 import java.util.Scanner;
-import java.util.Random;
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
 import com.exist.database.DBInsert;
+import com.exist.database.DBRetrieve;
 
 public class AddData {
     private EmployeeDataValidation validate;
     private ViewEmployeeData view;
-    private EmployeeData employee;
-    private CompanyData positionList;
     private DBInsert inDB;
-    private static final String sqlStatement1 = "INSERT INTO personalInfo (firstName, middleName, lastName, gender, birthDate) VALUES (?, ?, ?, ?, ?)";
-    private static final String sqlStatement2 = "INSERT INTO companyEmployeeData (position_refId, hireDate, basicSalary, emailId) VALUES (?, ?, ?, ?)";
-    private static final String sqlStatement3 = "INSERT INTO employeePosition (position_name, deptId) VALUES (?, ?)";
-    private static final String sqlStatement4 = "INSERT INTO departments (dept_name) VALUES (?)";
-    private static final String POSNUMCONDITION = " WHERE position_refId = ";
-    private static final String DEPTNUMCONDITION = " WHERE deptId = ";
-    private static final String DEPTNAMECONDITION = " WHERE dept_name = \'";
-    private static final String POSNAMECONDITION = " WHERE position_name = \'";
-    private static final String QUERYDEPARTMENTS = "SELECT deptId, dept_name FROM departments";
-    private static final String QUERYPOSITIONDATA = "SELECT position_refId, position_name, deptId FROM employeePosition";
-    private static final String QUERYPOSITIONS = "SELECT employeePosition.position_refId, employeePosition.position_name, departments.dept_name FROM employeePosition LEFT JOIN departments ON employeePosition.deptId = departments.deptId ORDER BY employeePosition.position_name ASC";
 
     public AddData() {
         validate = new EmployeeDataValidation();
         view = new ViewEmployeeData();
-        employee = new EmployeeData();
-        positionList = new CompanyData();
         inDB = new DBInsert();
     }
 
     public void addEmployeePersonalData() {
+        EmployeeData employee = new EmployeeData();
+
         System.out.println("Register");
 
         employee.setFirstName(validate.name("First Name: "));
@@ -44,9 +27,12 @@ public class AddData {
         employee.setBirthDate(validate.dateString("Birth Date: "));
         employee.setHireDate(validate.dateString("Hire Date: "));
 
-        view.showDataNoLimit(QUERYPOSITIONS);
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL_employeePosition_JOIN_departments_ORDERBY_Position"));
+
         System.out.println("Enter only the Position ID.");
-        employee.setPosition(Integer.valueOf(validate.numericDataExists("Position: ", QUERYPOSITIONDATA + POSNUMCONDITION)));
+
+        String condition = " WHERE position_refId = ";
+        employee.setPosition(Integer.valueOf(validate.numericDataExists("Position: ", DBRetrieve.getQuery("SELECT_ALL_employeePosition") + condition)));
 
         employee.setSalary(Integer.valueOf(validate.number("Salary: ")));
         employee.setEmail(validate.email("E-Mail Address: "));
@@ -55,18 +41,27 @@ public class AddData {
     }
 
     public void addNewPosition() {
-        view.showDataNoLimit(QUERYPOSITIONS);
-        positionList.setPositionName(validate.newWordData("Position: ", QUERYPOSITIONDATA + POSNAMECONDITION));
+        CompanyData positionList = new CompanyData();
+        String condition = new String();
 
-        view.showDataNoLimit(QUERYDEPARTMENTS);
-        positionList.setDeptId(Integer.valueOf(validate.numericDataExists("Department: ", QUERYDEPARTMENTS + DEPTNUMCONDITION)));
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL_employeePosition_JOIN_departments_ORDERBY_Position"));
+
+        condition = " WHERE position_name = \'";
+        positionList.setPositionName(validate.newWordData("Position: ", DBRetrieve.getQuery("SELECT_ALL_employeePosition") + condition));
+
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL_departments"));
+
+        condition = " WHERE deptId = ";
+        positionList.setDeptId(Integer.valueOf(validate.numericDataExists("Department: ", DBRetrieve.getQuery("SELECT_ALL_departments") + condition)));
 
         inDB.insertPosition(positionList);
     }
 
     public void addNewDepartment() {
-        view.showDataNoLimit(QUERYDEPARTMENTS);
-        String departmentName = validate.newWordData("Department: ", QUERYDEPARTMENTS + DEPTNAMECONDITION);
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL_departments"));
+
+        String condition = " WHERE dept_name = \'";
+        String departmentName = validate.newWordData("Department: ", DBRetrieve.getQuery("SELECT_ALL_departments") + condition);
 
         inDB.insertNewDept(departmentName);
     }

@@ -22,6 +22,7 @@ public class DBDataSource {
             dbProperty.load(in);
 
             bds = new BasicDataSource();
+
             bds.setDriverClassName(dbProperty.getProperty("db.Driver"));
             bds.setUsername(dbProperty.getProperty("db.Username"));
             bds.setPassword(dbProperty.getProperty("db.Password"));

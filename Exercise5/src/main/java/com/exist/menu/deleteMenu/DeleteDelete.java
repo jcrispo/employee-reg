@@ -7,13 +7,14 @@ import com.exist.database.DBDelete;
 import com.exist.database.DBRetrieve;
 
 public class DeleteDelete extends DeleteMenu {
-    private static final String deleteStatement = "DELETE FROM personalInfo";
-    private static final String condition = " WHERE personalInfo.employeeId = ";
 
     public void execute(String employeeNumber) {
         ViewEmployeeData view = new ViewEmployeeData();
 
-        view.showDataNoLimit(DBRetrieve.getQuery("queryAllData") + condition + employeeNumber + ";");
+        String deleteStatement = "DELETE FROM personalInfo";
+        String condition = " WHERE personalInfo.employeeId = ";
+
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL") + condition + employeeNumber + ";");
 
         if (view.invalidSearch()) {
             System.out.println("User ID does not exist!");

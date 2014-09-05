@@ -11,16 +11,17 @@ public class EditPosition extends EditMenu {
     private static final String conditionSql = "\' WHERE companyEmployeeData.employeeId = ";
 
     public void execute(String employeeNumberInput) {
-        Scanner input = new Scanner(System.in);
-        DBInsert dbInsert = new DBInsert();
         EmployeeDataValidation validate = new EmployeeDataValidation();
         ViewEmployeeData view = new ViewEmployeeData();
+        DBInsert dbInsert = new DBInsert();
 
-        view.showDataNoLimit(DBRetrieve.getQuery("queryPositions"));
+        view.showDataNoLimit(DBRetrieve.getQuery("SELECT_ALL_employeePosition_JOIN_departments_ORDERBY_Position"));
 
         System.out.println("Enter only the Position ID.");
 
-        String userInput = validate.numericDataExists("Position: ", DBRetrieve.getQuery("queryPositions.WhereIdIs"));
+        String condition = " WHERE position_refId = ";
+        String userInput = validate.numericDataExists("Position: ", DBRetrieve.getQuery("SELECT_ALL_employeePosition") + condition);
+
         dbInsert.editData(updateSql + userInput + conditionSql + employeeNumberInput);
     }
 
