@@ -27,10 +27,11 @@
               <addClasspath>true</addClasspath>
             </manifest>
             <manifestEntries>
-              <Class-Path>/home/jcrispo/.m2/repository/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar 
-                          /home/jcrispo/.m2/repository/org/apache/commons/commons-dbcp2/2.0.1/commons-dbcp2-2.0.1.jar
-                          /home/jcrispo/.m2/repository/org/apache/commons/commons-pool2/2.2/commons-pool2-2.2.jar 
-                          /home/jcrispo/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar
+              <Class-Path>
+                  ${HOME}/.m2/repository/mysql/mysql-connector-java/5.1.31/mysql-connector-java-5.1.31.jar 
+                  ${HOME}/.m2/repository/org/apache/commons/commons-dbcp2/2.0.1/commons-dbcp2-2.0.1.jar
+                  ${HOME}/.m2/repository/org/apache/commons/commons-pool2/2.2/commons-pool2-2.2.jar 
+                  ${HOME}/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar
               </Class-Path>
             </manifestEntries>
           </archive>
