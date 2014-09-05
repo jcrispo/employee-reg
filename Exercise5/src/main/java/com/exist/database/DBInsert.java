@@ -215,6 +215,14 @@ public class DBInsert {
     }
 
     public void addRandomData() {
+        DBInsert DBIn = new DBInsert();
+
+        DBIn.populateDepartments();
+        DBIn.populatePositions();
+        DBIn.populateEmployeeData();
+    }
+
+    public void populateEmployeeData() {
         Connection dbConnection = null;
         PreparedStatement insertStatement = null;
         PreparedStatement insertStatement1 = null;
@@ -310,6 +318,10 @@ public class DBInsert {
                     insertStatement.close();
                 }
 
+                if (insertStatement1 != null) {
+                    insertStatement.close();
+                }
+
                 if (dbConnection != null) {
                     dbConnection.close();
                 }
@@ -322,6 +334,126 @@ public class DBInsert {
 
                 dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "personalInfo");
                 dbIn.rollbackAutoIncrement(DBRetrieve.getQuery("SELECT_lastID_personalInfo"), "companyEmployeeData");
+            }
+        }
+
+    }
+
+
+    public void populatePositions() {
+        Connection dbConnection = null;
+        PreparedStatement insertStatement = null;
+
+        String path = "src/main/resources/positions.txt";
+
+        try {
+            dbConnection = DBDataSource.getInstance().getConnection();
+            dbConnection.setAutoCommit(false);
+
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_employeePosition"));
+
+            File file = new File(path);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            for (String row; (row = br.readLine()) != null; ) {
+
+                String[] column = row.split(",");
+
+                insertStatement.setString(1, column[0]);
+                insertStatement.setString(2, column[1]);
+                insertStatement.addBatch();
+            }
+            insertStatement.executeBatch();
+
+            dbConnection.commit();
+        } catch (SQLException e) {
+
+            String exception = e.toString();
+            if (exception.contains("Duplicate entry")) {
+                System.out.println("Adding given data to database Failed. Please check " + path);
+                System.out.println((exception.split(" ", 2)[1]).split("for", 2)[0] + "\n");
+            } else {
+                e.printStackTrace();
+            }
+
+            try {
+                dbConnection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (insertStatement != null) {
+                    insertStatement.close();
+                }
+
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void populateDepartments() {
+        Connection dbConnection = null;
+        PreparedStatement insertStatement = null;
+
+        String path = "src/main/resources/departments.txt";
+
+        try {
+            dbConnection = DBDataSource.getInstance().getConnection();
+            dbConnection.setAutoCommit(false);
+
+            insertStatement = dbConnection.prepareStatement(DBRetrieve.getQuery("INSERT_departments"));
+
+            File file = new File(path);
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            for (String department; (department = br.readLine()) != null; ) {
+
+                insertStatement.setString(1, department);
+                insertStatement.addBatch();
+            }
+            insertStatement.executeBatch();
+
+            dbConnection.commit();
+        } catch (SQLException e) {
+
+            String exception = e.toString();
+            if (exception.contains("Duplicate entry")) {
+                System.out.println("Adding given data to database Failed. Please check " + path);
+                System.out.println((exception.split(" ", 2)[1]).split("for", 2)[0] + "\n");
+            } else {
+                e.printStackTrace();
+            }
+
+            try {
+                dbConnection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (insertStatement != null) {
+                    insertStatement.close();
+                }
+
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 
