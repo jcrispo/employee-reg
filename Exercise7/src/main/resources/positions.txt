@@ -1,0 +1,13 @@
+accountant,1
+bookkeeper,1
+controller,1
+receptionist,2
+staff,2
+secretary,2
+java developer,3
+software tester,3
+qa engineer,3
+project manager,4
+cfo,4
+ceo,4
+janitor,5
