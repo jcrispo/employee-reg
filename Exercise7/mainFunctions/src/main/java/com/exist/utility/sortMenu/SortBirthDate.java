@@ -1,10 +1,10 @@
 package com.exist.utility.sortMenu;
 
 import java.util.Scanner;
-import com.exist.database.DBRetrieve;
 
 public class SortBirthDate extends SortMenu {
 
+    @Override
     public String parameter() {
         String returnValue = new String(" ");
 
@@ -17,13 +17,12 @@ public class SortBirthDate extends SortMenu {
 
             userInput = input.nextLine().trim();
 
-
             if (userInput.equals("1")) {
-                returnValue = " " + DBRetrieve.getQuery("sortbDateD") + " ";
+                returnValue = " ORDER BY E.birthDate ASC ";
 
                 exit = true;
             } else if (userInput.equals("2")) {
-                returnValue = " " + DBRetrieve.getQuery("sortbDateA") + " ";
+                returnValue = " ORDER BY E.birthDate DESC ";
 
                 exit = true;
             } else {
@@ -34,14 +33,7 @@ public class SortBirthDate extends SortMenu {
         return returnValue;
     }
 
-    public String queryA() {
-        return "queryDataLimitA";
-    }
-    
-    public String queryB() {
-        return "queryDataLimitB";
-    }
-
+    @Override
     public boolean exitViewMenu() {
         return true;
     }

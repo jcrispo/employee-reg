@@ -1,10 +1,10 @@
 package com.exist.utility.sortMenu;
 
 import java.util.Scanner;
-import com.exist.database.DBRetrieve;
 
 public class SortSalary extends SortMenu {
 
+    @Override
     public String parameter() {
         String returnValue = new String(" ");
 
@@ -18,11 +18,11 @@ public class SortSalary extends SortMenu {
             userInput = input.nextLine().trim();
 
             if (userInput.equals("1")) {
-                returnValue = " " + DBRetrieve.getQuery("sortSalaryA") + " ";
+                returnValue = " ORDER BY C.salary ASC ";
 
                 exit = true;
             } else if (userInput.equals("2")) {
-                returnValue = " " + DBRetrieve.getQuery("sortSalaryD") + " ";
+                returnValue = " ORDER BY C.salary DESC ";
 
                 exit = true;
             } else {
@@ -33,14 +33,7 @@ public class SortSalary extends SortMenu {
         return returnValue;
     }
 
-    public String queryA() {
-        return "queryDataLimitA1";
-    }
-    
-    public String queryB() {
-        return "queryDataLimitB1";
-    }
-
+    @Override
     public boolean exitViewMenu() {
         return true;
     }

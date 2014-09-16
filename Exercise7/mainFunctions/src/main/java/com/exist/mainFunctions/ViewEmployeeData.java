@@ -2,24 +2,20 @@ package com.exist.mainFunctions;
 
 import java.util.Scanner;
 import java.util.List;
-
 import com.exist.database.HDBRetrieveManager;
 import com.exist.utility.sortMenu.SortMenu;
 import com.exist.utility.sortMenu.SortOptions;
-import com.exist.database.DBRetrieve;
+
+import static com.exist.database.HDBRetrieveManager.getQuery;
 
 public class ViewEmployeeData {
-    private DBRetrieve retrieve;
-    private PrintDisplay print;
     private Scanner input;
     private static SortMenu sort;
     private static boolean invalidSearchParameter;
     private static final int EMPTY = 1;
 
     public ViewEmployeeData () {
-        retrieve = new DBRetrieve();
         input = new Scanner(System.in);
-        print = new PrintDisplay();
         invalidSearchParameter = false;
     }
 
@@ -39,19 +35,20 @@ public class ViewEmployeeData {
 
         String sortParameter = sort.parameter();
 
-        view.showData(retrieve.getQuery(sort.queryA()) + sortParameter);
+        view.showQuery(getQuery("SELECT_ALL_JOIN_ALL") + sortParameter);
 
         if (invalidSearchParameter) {
             System.out.println("Database is Empty!");
+
             invalidSearchParameter = false;
         }
     }
 
-    public void showQueryNoLimit(String query) {
+    public void showQueryNoLimit(String hqlQuery) {
         HDBRetrieveManager hdbRetrieveManager = new HDBRetrieveManager();
         Display display = new Display();
 
-        List<Object[]> data = hdbRetrieveManager.retrieveObjectArray(query, 0, 0);
+        List<Object[]> data = hdbRetrieveManager.retrieveObjectArray(hqlQuery, 0, 0);
 
         if (data.size() == EMPTY) {
             System.out.println("\nNo Result Found!");
@@ -63,36 +60,37 @@ public class ViewEmployeeData {
 
     }
 
-    public void showData(String query) {
+    public void showQuery(String hqlQuery) {
+        HDBRetrieveManager hdbRetrieveManager = new HDBRetrieveManager();
         EmployeeDataValidation validate = new EmployeeDataValidation();
+        Display display = new Display();
 
         Integer beginning = 0;
-        String range = new String();
-
-        range = validate.number("Show how many rows of data?: ");
+        Integer range = Integer.valueOf(validate.number("Show how many rows of data?: "));
 
         String showMore = "y";
         boolean exit = false;
         while (!exit) {
 
             if (showMore.equals("y")) {
-                List<List<String>> databaseData = retrieve.getData(query + " LIMIT " + beginning.toString() + ", " + range + ") " + retrieve.getQuery(sort.queryB()));
+                List<Object[]> data = hdbRetrieveManager.retrieveObjectArray(hqlQuery, beginning, range);
 
-                if (databaseData.isEmpty() && beginning.equals("0")){
+                if ((data.size() == EMPTY) && beginning.equals(0)){
                     System.out.println("\nNo Result Found!");
 
-                    invalidSearchParameter = true;           
+                    invalidSearchParameter = true;
 
                     break;
-                } else if (databaseData.isEmpty() && !beginning.equals("0")) {
+                } else if ((data.size() == EMPTY) && !beginning.equals(0)){
                     System.out.println("No more data");
+
                     break;
-                } else if (databaseData.size() <= Integer.valueOf(range)) {
-                    print.printDatabaseData(databaseData);
+                } else if (data.size() <= Integer.valueOf(range)) {
+                    display.displayObjectArray(data);
 
                     break;
                 } else {
-                    print.printDatabaseData(databaseData);
+                    display.displayObjectArray(data);
 
                     beginning += Integer.valueOf(range);
                 }
@@ -131,7 +129,7 @@ public class ViewEmployeeData {
            }
         }
 
-        view.showQueryNoLimit(HDBRetrieveManager.getQuery("S_ALL_Positions_JOIN_Departments") + positionSort);
+        view.showQueryNoLimit(getQuery("S_ALL_Positions_JOIN_Departments") + positionSort);
     }
 
     public void viewSortedDepartments () {
@@ -156,7 +154,7 @@ public class ViewEmployeeData {
            }
         }
 
-        view.showQueryNoLimit(HDBRetrieveManager.getQuery("S_ALL_Departments") + departmentSort);
+        view.showQueryNoLimit(getQuery("S_ALL_Departments") + departmentSort);
     }
 
     public boolean invalidSearch () {
