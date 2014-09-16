@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.exist.storage.Positions" table="employeePosition">
+        <id name="id" column="position_refId" type="int">
+            <generator class="native">
+            </generator>
+        </id>
+        <property name="position" column="position_name" type="string"/>
+        <property name="deptId" column="deptId" type="int"/>
+        <many-to-one name="department" column="deptId" class="com.exist.storage.Departments" not-null="true" update="false" insert="false"/>
+    </class>
+</hibernate-mapping>
