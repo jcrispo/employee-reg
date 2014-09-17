@@ -2,7 +2,6 @@ package com.exist.main;
 
 import java.util.Scanner;
 
-import com.exist.database.HDBRetrieveManager;
 import com.exist.database.utility.HDBUtility;
 import com.exist.mainMenu.EmployeeRegistrationMenu;
 import com.exist.mainMenu.MenuOptions;
@@ -23,8 +22,6 @@ public class EmployeeRegistration {
 
         System.out.println("\nEmployee Registration Program\n");
 
-        HDBRetrieveManager hdbRetrieveManager = new HDBRetrieveManager();
-
         boolean exitMenu = false;
         while (!exitMenu) {
             mainClass.showMenu();
@@ -36,9 +33,10 @@ public class EmployeeRegistration {
     }
 
     public void showMenu() {
+        Scanner userInput = new Scanner(System.in);
+
         System.out.print(menuOptions);
 
-        Scanner userInput = new Scanner(System.in);
         userChoice = (userInput.nextLine()).trim();
         if (userChoice.length() == 0) {
             userChoice = BLANK;

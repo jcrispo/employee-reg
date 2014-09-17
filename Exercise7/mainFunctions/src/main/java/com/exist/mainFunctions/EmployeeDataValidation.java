@@ -2,10 +2,8 @@ package com.exist.mainFunctions;
 
 import com.exist.database.HDBRetrieveManager;
 
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 
@@ -100,8 +98,11 @@ public class EmployeeDataValidation {
 
             returnValue = userInput.nextLine().trim();
             if (validate.containsOnlyNumbers(returnValue)) {
+                Map<String, Object> namedParameter = new HashMap<String, Object>();
 
-                resultIsEmpty = fromDatabase.resultIsEmpty(query, Integer.parseInt(returnValue));
+                namedParameter.put(":id", Integer.valueOf(returnValue));
+
+                resultIsEmpty = fromDatabase.resultIsEmpty(query, namedParameter);
                 if (resultIsEmpty){
                     System.out.println("ID number does not exist. Try again");
                 }
@@ -114,17 +115,20 @@ public class EmployeeDataValidation {
     public String newWordData (String print, String query) {
         String returnValue = new String();
 
-        boolean resultIsEmpty = false;
-        while (!resultIsEmpty) {
+        boolean resultIsNotEmpty = true;
+        while (resultIsNotEmpty) {
             System.out.print(print);
 
             returnValue = userInput.nextLine().trim();
 
             if (validate.containsOnlyLetters(returnValue) && validate.belowCharLimit(returnValue, WORD_LIMIT)) {
+                Map<String, Object> namedParameter = new HashMap<String, Object>();
 
-                resultIsEmpty = fromDatabase.resultIsEmpty(query, returnValue);
+                String parameter = HDBRetrieveManager.getNamedParameters(query).get(0);
+                namedParameter.put(parameter, returnValue);
 
-                if (!resultIsEmpty){
+                resultIsNotEmpty = !fromDatabase.resultIsEmpty(query, namedParameter);
+                if (resultIsNotEmpty){
                     System.out.println("Data already exists!");
                 }
             }

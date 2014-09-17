@@ -15,45 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class HDBRetrieveManager implements HDBRetrieve {
     private static final String queryPropertyFileDir = "src/main/resources/hqlQuery.properties";
 
-    public void test() {
-        Session session = HDBUtility.getSessionFactory().openSession();
-        Transaction transaction = null;
-
-        try {
-            transaction = session.beginTransaction();
-
-            String hqlQuery = "FROM Employee";
-
-            Query query = session.createQuery(hqlQuery);
-            query.setMaxResults(10);
-
-            List<Object> dataList = query.list();
-
-            for (Object o : dataList) {
-                Employee employee = (Employee) o;
-                System.out.print("\t" + employee.getId());
-                System.out.print("\t" + employee.getFirstName());
-                System.out.print("\t" + employee.getMiddleName());
-                System.out.print("\t" + employee.getLastName());
-                System.out.print("\t" + employee.getCompanyData().getEmail());
-                System.out.print("\t" + employee.getCompanyData().getPosition().getPosition());
-                System.out.println("\t" + employee.getCompanyData().getPosition().getDepartment().getDepartment());
-            }
-
-            transaction.commit();
-        } catch (HibernateException e) {
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-    }
-
-    public boolean resultIsEmpty(String hqlQuery, Object parameter) {
+    public boolean resultIsEmpty(String hqlQuery, Map<String, Object> namedParameter) {
         boolean retVal = true;
 
         SessionFactory sessionFactory = HDBUtility.getSessionFactory();
@@ -64,14 +32,11 @@ public class HDBRetrieveManager implements HDBRetrieve {
             transaction = session.beginTransaction();
 
             Query query = session.createQuery(hqlQuery);
-            if (hqlQuery.contains(":id")) {
-                query.setParameter("id", (Integer) parameter);
-            }
-            if (hqlQuery.contains(":position")) {
-                query.setParameter("position", (String) parameter);
-            }
-            if (hqlQuery.contains(":department")) {
-                query.setParameter("department", (String) parameter);
+
+            for (String key : namedParameter.keySet()) {
+                String parameter = key.split(":")[1];
+
+                query.setParameter(parameter, namedParameter.get(key));
             }
 
             List data = query.list();
@@ -164,6 +129,25 @@ public class HDBRetrieveManager implements HDBRetrieve {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        return returnValue;
+    }
+
+    public static List<String> getNamedParameters(String hqlQuery) {
+        List<String> returnValue = new ArrayList<String>();
+
+        while (hqlQuery.contains(":")) {
+            String sub1 = hqlQuery.substring(hqlQuery.indexOf(":"));
+            String[] query = sub1.split(" ", 2);
+
+            returnValue.add(query[0]);
+
+            if (query.length == 2) {
+                hqlQuery = query[1];
+            } else {
+                hqlQuery = " ";
+            }
         }
 
         return returnValue;
