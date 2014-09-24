@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+
+
+http://www.springframework.org/schema/context
+
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!--<bean name="/view.html" class="com.exist.springWebApp.controllers.UserController">-->
+    <!--<property name="simpleUserList" ref="userList"/>-->
+    <!--<property name="createUserList" ref="userListCreator" />-->
+    <!--</bean>-->
+
+    <bean id="userListCreator" class="com.exist.service.CreateUserList">
+    </bean>
+
+    <bean id="userList" class="com.exist.service.SimpleUserList">
+        <property name="users" >
+            <list>
+            </list>
+        </property>
+    </bean>
+    <bean id="user" class="com.exist.storage.User"></bean>
+    <bean id="user1" class="com.exist.storage.User">
+        <property name="id" value="1"/>
+        <property name="lastName" value="crispo"/>
+        <property name="email" value="jcrispo"/>
+    </bean>
+    <bean id="user2" class="com.exist.storage.User">
+        <property name="id" value="2"/>
+        <property name="lastName" value="mohr"/>
+        <property name="email" value="lmohr"/>
+    </bean>
+
+    <bean name="/view.html" class="com.exist.springWebApp.controllers.UserController"/>
+    <bean name="/register.html" class="com.exist.springWebApp.controllers.RegisterController"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+</beans>
