@@ -1,11 +1,16 @@
 package com.exist.storage;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class User implements Serializable {
     private int id;
-    private String email;
+    private String firstName;
+    private String middleName;
     private String lastName;
+    private String gender;
+    private Date birthDate;
+    private String email;
 
     public int getId() {
         return id;
@@ -39,5 +44,37 @@ public class User implements Serializable {
         returnValue.append(" Last Name: " + lastName + ";");
 
         return returnValue.toString();
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 }
