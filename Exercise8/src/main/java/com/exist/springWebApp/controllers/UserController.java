@@ -32,7 +32,9 @@ public class UserController implements Controller {
 
             returnValue.addObject("model", myModel);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            String message = "Error. Id input must be a number";
+
+            returnValue = new ModelAndView("error", "message", message);
         } finally {
             return returnValue;
         }
