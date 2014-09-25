@@ -1,6 +1,7 @@
 package com.exist.springWebApp.controllers;
 
 
+import com.exist.service.SimpleUserList;
 import com.exist.storage.User;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,22 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 public class UserController implements Controller {
+    SimpleUserList simpleUserList;
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView returnValue = new ModelAndView("view");
 
         Map<String, Object> myModel = new HashMap<String, Object>();
-        List<User> userList = new ArrayList<User>();
         User user = new User();
 
         try {
-            user.setId(Integer.valueOf(request.getParameter("id")));
+            int idNumber = Integer.valueOf(request.getParameter("id"));
+            user.setId(idNumber);
             user.setLastName(request.getParameter("lastName"));
             user.setEmail(request.getParameter("email"));
 
-            userList.add(user);
-            myModel.put("users", userList);
+            simpleUserList.setUsers(user);
+            myModel.put("users", simpleUserList.getUsers());
 
             returnValue.addObject("model", myModel);
         } catch (NumberFormatException e) {
@@ -40,6 +42,13 @@ public class UserController implements Controller {
         }
     }
 
+    public SimpleUserList getSimpleUserList() {
+        return simpleUserList;
+    }
+
+    public void setSimpleUserList(SimpleUserList simpleUserList) {
+        this.simpleUserList = simpleUserList;
+    }
 }
 
 //FOR NOTES:

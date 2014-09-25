@@ -15,10 +15,6 @@ public class SimpleUserList implements UserList {
         } else {
             users.add(user);
         }
-
-        for (User u : users) {
-            System.out.println(u.getLastName());
-        }
     }
 
     @Override
