@@ -26,15 +26,28 @@ public class ViewController implements Controller {
         String hqlQuery = queryManager.getQuery("SELECT_ALL_JOIN_ALL");
 
         try {
-            int beginIndex = employeeDataValidation.number(request.getParameter("beginIndex"));
+            String sortBy = request.getParameter("sortBy");
+            String sort = request.getParameter("sort");
+
+            Integer beginIndex;
+            if (request.getParameter("beginIndex") == null) {
+                beginIndex = 0;
+            } else {
+                beginIndex = Integer.valueOf(request.getParameter("beginIndex"));
+            }
+
             int maxResult = employeeDataValidation.number(request.getParameter("maxResult"));
 
-            List<Object[]> employeeData = employeeDAO.getEmployeeData(hqlQuery, beginIndex, maxResult);
+            List<Object[]> employeeData = employeeDAO.getEmployeeData(hqlQuery + sortBy + sort, beginIndex, maxResult);
 
             String[] labels = (String[]) employeeData.remove(employeeData.size()-1);
 
             employeeData.add(0,labels);
 
+            returnValue.addObject("sortBy", sortBy);
+            returnValue.addObject("sort", sort);
+            returnValue.addObject("beginIndex", beginIndex+maxResult);
+            returnValue.addObject("maxResult", maxResult);
             returnValue.addObject("employeeData", employeeData);
         } catch (InvalidInputException e) {
             return new ModelAndView("viewPage", "message", e.toString());
