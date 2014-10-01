@@ -67,11 +67,13 @@ public class EmployeeDataValidation {
     }
 
     public String gender(String gender) throws InvalidInputException {
-        String returnValue = gender;
+        String returnValue;
 
         System.out.println(gender);
 
-        if (!returnValue.equals("male") && !returnValue.equals("female")) {
+        if (gender.equals("male") || gender.equals("female")) {
+            returnValue = gender;
+        } else {
             throw new InvalidInputException("Invalid input for Gender. Please choose between 'male'/'female' only.");
         }
 
