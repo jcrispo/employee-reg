@@ -23,7 +23,7 @@ public class PopulateDBController implements Controller {
             message = "Database already contains data";
         }
 
-        return new ModelAndView("view", "message", message);
+        return new ModelAndView("result", "message", message);
     }
 
     public void setEmployeeDAO(EmployeeDAOImpl employeeDAO) {
