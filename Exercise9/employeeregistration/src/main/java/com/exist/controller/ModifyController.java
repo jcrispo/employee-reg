@@ -42,7 +42,8 @@ public class ModifyController implements Controller {
             returnValue.addObject("id", id);
             returnValue.addObject("employeeData", employeeData);
 
-            List<Object[]> positionData = employeeDAO.getEmployeeData("SELECT P.id AS ID, P.position AS Position FROM Position P ORDER BY P.position ASC" , 0, 0);
+            hqlQuery = queryManager.getQuery("S_ALL_Positions_ORDER_Position");
+            List<Object[]> positionData = employeeDAO.getEmployeeData(hqlQuery , 0, 0);
 
             if (positionData.size()==1) {
                 return new ModelAndView("modifyPage", "message", "Position List is Empty.");

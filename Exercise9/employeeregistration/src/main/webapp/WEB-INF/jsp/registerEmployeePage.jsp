@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <title></title>
@@ -7,6 +8,7 @@
             border: 1px solid black;
         }
     </style>
+    <br/><br/><br/><br/><br/>
 </head>
 <body>
 <table style="width: 40%" align="center">
@@ -33,7 +35,18 @@
             <td width="50%"><center>Birth Date:</center></td><td><input type="text" id="birthDate" name="birthDate"/></td>
         </tr>
         <tr>
-            <td width="50%"><center>Position ID:</center></td><td><input type="text" id="positionId" name="positionId"  /></td>
+            <td>
+                <center>Edit Position</center>
+            </td>
+            <td>
+                <select id="positionId" name="positionId">
+                    <c:forEach items="${positionData}" var="position">
+                        <option value=${position[0]}>${position[1]}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="id" value="${id}"/>
+                <input type="hidden" name="positionData" value="${positionData}"/>
+            </td>
         </tr>
         <tr>
             <td width="50%"><center>Hire Date:</center></td><td><input type="text" id="hireDate" name="hireDate"  /></td>
@@ -65,7 +78,7 @@
     <tr>
         <td>
             <center>
-                Note:&nbsp;${message}
+                &nbsp;${message}
             </center>
         </td>
     </tr>

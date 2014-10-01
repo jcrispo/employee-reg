@@ -7,9 +7,9 @@
             border: 1px solid black;
         }
     </style>
+    <br/><br/><br/><br/><br/>
 </head>
 <body>
-<br/><br/>
 <table style="width: 50%" align="center">
     <tr>
         <td>
@@ -31,5 +31,7 @@
         </tr>
     </table>
 </form>
+<br/>
+<a href="http://localhost:8080"><center>Back to Index</center></a>
 </body>
 </html>

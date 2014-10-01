@@ -8,15 +8,24 @@
              border: 1px solid black;
          }
     </style>
+    <br/>
 </head>
 <body>
+<br/><br/>
 <table style="width:100%">
         <c:forEach items="${employeeData}" var="employee"><tr>
             <c:forEach items="${employee}" varStatus="loop">
                 <td>${employee[loop.index]}</td>
             </c:forEach></tr>
         </c:forEach>
+    <tr>
+        <td>
+            ${message}
+        </td>
+    </tr>
 </table>
+<br/>
+<center>
     <form action="/view.html" method="POST">
         <input type="submit" value="View More"/>
         <input type="hidden" name="beginIndex" value="${beginIndex}"/>
@@ -24,7 +33,8 @@
         <input type="hidden" name="sortBy" value="${sortBy}"/>
         <input type="hidden" name="sort" value="${sort}"/>
     </form>
-    <p>${message}</p>
-    <a href="http://localhost:8080" >Go Back to Index</a>
+    <a href="/viewPage.html">Back</a><br/>
+    <a href="http://localhost:8080" >Back to Index</a>
+</center>
 </body>
 </html>

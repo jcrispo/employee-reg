@@ -6,10 +6,15 @@
     <bean name="/register.html" class="com.exist.controller.RegisterController">
         <property name="employeeDAO" ref="dao"/>
     </bean>
-    <bean name="/registerEmployeePage.html" class="com.exist.controller.RegisterEmployeePageController"/>
+    <bean name="/registerEmployeePage.html" class="com.exist.controller.RegisterEmployeePageController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="queryManager" ref="queryManager"/>
+    </bean>
     <bean name="/registerEmployee.html" class="com.exist.controller.RegisterEmployeeController">
         <property name="employeeDAO" ref="dao"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
+        <property name="queryManager" ref="queryManager"/>
+        <property name="employee" ref="employee"/>
     </bean>
     <bean name="/populateDb.html" class="com.exist.controller.PopulateDBController">
         <property name="employeeDAO" ref="dao"/>

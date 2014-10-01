@@ -69,8 +69,6 @@ public class EmployeeDataValidation {
     public String gender(String gender) throws InvalidInputException {
         String returnValue;
 
-        System.out.println(gender);
-
         if (gender.equals("male") || gender.equals("female")) {
             returnValue = gender;
         } else {
