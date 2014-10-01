@@ -10,59 +10,78 @@
     </style>
 </head>
 <body>
-    <p>
-        ${message}
-    </p>
-    <table style="width:100%">
-        <p>
-            <c:forEach items="${employeeData}" var="employee"><tr>
-                <c:forEach items="${employee}" varStatus="loop">
-                    <td>${employee[loop.index]}</td>
-                </c:forEach></tr>
-            </c:forEach>
-        </p>
-    </table>
-    <p>
-    <table style="width:30%">
-    <tr><form action="/edit.html" method="POST">
+<br/>
+<table style="width:100%">
+    <tr>
         <td>
-        <select id="field" name="field">
-        <option value=":firstName">First Name</option>
-        <option value=":middleName">Middle Name</option>
-        <option value=":lastName" selected="selected">Last Name</option>
-        <option value=":gender">Gender</option>
-        <option value=":birthDate">Birth Date</option>
-        <option value=":hireDate">Hire Date</option>
-        <option value=":salary">Salary</option>
-        </select>
+            <center>
+                &nbsp;${message}
+            </center>
+        </td>
+    </tr>
+</table>
+<table style="width:100%">
+    <c:forEach items="${employeeData}" var="employee"><tr>
+        <c:forEach items="${employee}" varStatus="loop">
+            <td><center>${employee[loop.index]}</center></td>
+        </c:forEach></tr>
+    </c:forEach>
+</table>
+<br/>
+<table style="width:30%" align="center">
+    <tr>
+        <form action="/edit.html" method="POST">
+        <td>
+            <center>
+                <select id="field" name="field">
+                    <option value=":firstName">First Name</option>
+                    <option value=":middleName">Middle Name</option>
+                    <option value=":lastName" selected="selected">Last Name</option>
+                    <option value=":gender">Gender</option>
+                    <option value=":birthDate">Birth Date</option>
+                    <option value=":hireDate">Hire Date</option>
+                    <option value=":salary">Salary</option>
+                </select>
+            </center>
         <input type="hidden" name="id" value="${id}"/>
         <input type="hidden" name="employeeData" value="${employeeData}"/>
         </td><td>
-        <input type="text" name="fieldValue"/>
+        <center><input type="text" name="fieldValue"/></center>
         </td><td>
-        <button type="submit">Edit</button>
+        <center><button type="submit">Edit</button></center>
         </td>
-    </form></tr>
-        <tr>
-    <form action="/editPosition.html" method="POST">
+        </form>
+    </tr>
+    <tr>
+        <form action="/editPosition.html" method="POST">
         <td>
-            Edit Position
-        </td><td>
+            <center>Edit Position</center>
+        </td><td><center>
         <select id="positionId" name="positionId">
             <c:forEach items="${positionData}" var="position">
                 <option value=${position[0]}>${position[1]}</option>
             </c:forEach>
-        </select>
+        </select></center>
         <input type="hidden" name="id" value="${id}"/>
         </td><td>
-        <button type="submit">Edit</button>
+        <center><button type="submit">Edit</button></center>
         </td>
-    </form></tr>
-    </table>
-    <p><form action="/delete.html" method="POST">
-        <input type="hidden" name="id" value="${id}"/>
-        <button type="submit">Delete</button>
-    </form> </p>
-    <a href="http://localhost:8080" >Go Back to Index</a>
+        </form>
+    </tr>
+</table>
+<table style="width:30%" align="center">
+    <tr>
+        <td>
+            <center>Delete Employee Data</center>
+        </td>
+        <td>
+            <form action="/delete.html" method="POST">
+                <input type="hidden" name="id" value="${id}"/><br/>
+                <center><button type="submit">Delete</button></center>
+            </form>
+        </td>
+    </tr>
+</table>
+<a href="http://localhost:8080"><center>Back to Index</center></a>
 </body>
 </html>

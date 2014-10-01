@@ -2,9 +2,28 @@
 <html>
 <head>
     <title>Register Validation</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <br>${message}
-    <br><a href="http://localhost:8080">Back to Index</a>
+<table style="width: 50%" align="center">
+    <tr>
+        <td>
+            <center>
+                ${message}
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <a href="http://localhost:8080">Back to Index</a>
+            </center>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

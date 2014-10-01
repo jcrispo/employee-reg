@@ -2,14 +2,32 @@
 <html>
 <head>
     <title></title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <br/>${message}
+<br/><br/>
+<table style="width: 50%" align="center">
+    <tr>
+        <td>
+            &nbsp;${message}
+        </td>
+    </tr>
+</table>
 <form method="POST" action="/modify.html">
-    <table style="width:100%">
+    <table style="width: 50%" align="center">
         <tr>
-            <td width="20%">Enter Employee ID:</td><td><input type="text" name="id"/></td>
-            <br/><input type="submit" value="Submit"/>
+            <td>
+                Enter Employee ID:
+            </td>
+            <td><center>
+                <input type="text" name="id"/>
+                <input type="submit" value="Submit"/>
+                </center>
+            </td>
         </tr>
     </table>
 </form>
