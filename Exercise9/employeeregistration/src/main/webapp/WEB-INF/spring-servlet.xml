@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="/register.html" class="com.exist.controller.RegisterController">
+        <property name="employeeDAO" ref="dao"/>
+    </bean>
+    <bean name="/registerEmployeePage.html" class="com.exist.controller.RegisterEmployeePageController"/>
+    <bean name="/registerEmployee.html" class="com.exist.controller.RegisterEmployeeController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
+    </bean>
+    <bean name="/populateDb.html" class="com.exist.controller.PopulateDBController">
+        <property name="employeeDAO" ref="dao"/>
+    </bean>
+    <bean name="/viewPage.html" class="com.exist.controller.ViewPageController"/>
+    <bean name="/view.html" class="com.exist.controller.ViewController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="queryManager" ref="queryManager"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
+    </bean>
+    <bean name="/modifyPage.html" class="com.exist.controller.ModifyPageController"/>
+    <bean name="/modify.html" class="com.exist.controller.ModifyController">
+        <property name="queryManager" ref="queryManager"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
+        <property name="employeeDAO" ref="dao"/>
+    </bean>
+    <bean name="/edit.html" class="com.exist.controller.EditController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="queryManager" ref="queryManager"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
+    </bean>
+    <bean name="/editPosition.html" class="com.exist.controller.EditPositionController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="queryManager" ref="queryManager"/>
+    </bean>
+    <bean name="/delete.html" class="com.exist.controller.DeleteController">
+        <property name="employeeDAO" ref="dao"/>
+        <property name="queryManager" ref="queryManager"/>
+    </bean>
+
+    <bean name="dao" class="com.exist.dao.EmployeeDAOImpl">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+        <property name="populateDatabase" ref="populateDatabase"/>
+    </bean>
+    <bean name="populateDatabase" class="com.exist.dao.utility.PopulateDatabase">
+        <constructor-arg name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean name="employeeDataValidation" class="com.exist.services.EmployeeDataValidation">
+        <constructor-arg name="validate" ref="validate"/>
+    </bean>
+
+    <bean name="employee" class="com.exist.models.Employee"/>
+    <bean name="person" class="com.exist.models.Person"/>
+    <bean name="companyEmployeeData" class="com.exist.models.CompanyEmployeeData"/>
+    <bean name="position" class="com.exist.models.Position"/>
+    <bean name="department" class="com.exist.models.Department"/>
+    <bean name="validate" class="com.exist.services.InputValidation"/>
+    <bean name="queryManager" class="com.exist.services.QueryManager"/>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/EXERCISE9?useServerPrepStmts=false&amp;rewriteBatchedStatements=true&amp;useCompression=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="ex1stgl0bal"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>

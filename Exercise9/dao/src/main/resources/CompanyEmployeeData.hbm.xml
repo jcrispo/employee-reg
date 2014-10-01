@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.exist.models.CompanyEmployeeData" table="companyEmployeeData">
+        <id name="id" column="id" type="int">
+            <generator class="foreign">
+                <param name="property">person</param>
+            </generator>
+        </id>
+        <property name="hireDate" column="hireDate" type="date"/>
+        <property name="salary" column="salary" type="int"/>
+        <property name="email" column="email" type="string"/>
+        <property name="positionId" column="positionId" type="int"/>
+        <one-to-one name="person" class="com.exist.models.Person" constrained="true"/>
+        <many-to-one name="position" column="positionId" class="com.exist.models.Position" insert="false" update="false" not-null="true"/>
+    </class>
+</hibernate-mapping>
