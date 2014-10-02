@@ -1,7 +1,6 @@
 package com.exist.controller;
 
 import com.exist.dao.EmployeeDAOImpl;
-import com.exist.models.Employee;
 import com.exist.services.EmployeeDataValidation;
 import com.exist.services.QueryManager;
 import com.exist.services.utilities.InvalidInputException;
@@ -10,9 +9,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ViewController implements Controller {
     private EmployeeDAOImpl employeeDAO;
@@ -24,11 +21,11 @@ public class ViewController implements Controller {
         ModelAndView returnValue = new ModelAndView("view");
 
         try {
-            String hqlQuery = queryManager.getQuery("SELECT_ALL_JOIN_ALL");
             String sortBy = request.getParameter("sortBy");
             String sort = request.getParameter("sort");
-
             int maxResult = employeeDataValidation.number(request.getParameter("maxResult"));
+
+            String hqlQuery;
             Integer beginIndex;
 
             if (request.getParameter("beginIndex") == null) {
@@ -41,7 +38,10 @@ public class ViewController implements Controller {
                 throw new InvalidInputException("Maximum Result Value must be greater than 0.");
             }
 
+            hqlQuery = queryManager.getQuery("SELECT_ALL_JOIN_ALL");
+
             List<Object[]> employeeData = employeeDAO.getEmployeeData(hqlQuery + sortBy + sort, beginIndex, maxResult);
+
             String[] labels = (String[]) employeeData.remove(employeeData.size()-1);
 
             employeeData.add(0,labels);

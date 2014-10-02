@@ -1,6 +1,5 @@
 package com.exist.services;
 
-
 import com.exist.services.utilities.InvalidInputException;
 
 import java.text.ParseException;
@@ -8,8 +7,6 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EmployeeDataValidation {
     private InputValidation validate;
@@ -20,26 +17,26 @@ public class EmployeeDataValidation {
     }
 
     public Date dateString(String dateString) throws InvalidInputException {
-        Calendar date = Calendar.getInstance();
+        Calendar returnValue = Calendar.getInstance();
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
         try {
-            date.setTime(dateFormat.parse(dateString));
+            returnValue.setTime(dateFormat.parse(dateString));
 
-            if (!validate.dayIsValid(date) || !validate.monthIsValid(date) || !validate.yearIsValid(date)) {
+            if (!validate.dayIsValid(returnValue) || !validate.monthIsValid(returnValue) || !validate.yearIsValid(returnValue)) {
                 throw new InvalidInputException("Invalid Date");
             }
         } catch (ParseException e) {
             throw new InvalidInputException("Invalid Date");
         }
 
-        return date.getTime();
+        return returnValue.getTime();
     }
 
     public String name(String name) throws InvalidInputException {
-        String returnValue = new String();
+        String returnValue;
 
         if (validate.containsOnlyLetters(name)) {
             if (validate.belowCharLimit(name, WORD_LIMIT)) {
@@ -76,51 +73,6 @@ public class EmployeeDataValidation {
         }
 
         return returnValue;
-    }
-
-    public String numericDataExists(String print, String query) {
-        String returnValue = new String();
-
-        boolean resultIsEmpty = true;
-        while (resultIsEmpty) {
-            System.out.print(print);
-
-            if (validate.containsOnlyNumbers(returnValue)) {
-                Map<String, Object> namedParameter = new HashMap<String, Object>();
-
-                namedParameter.put(":id", Integer.valueOf(returnValue));
-
-//                resultIsEmpty = fromDatabase.resultIsEmpty(query, namedParameter);
-                if (resultIsEmpty){
-                    System.out.println("ID number does not exist. Try again");
-                }
-            }
-        }
-
-        return returnValue;
-    }
-
-    public String newWordData(String print, String query) {
-        String returnValue = new String();
-
-        boolean resultIsNotEmpty = true;
-        while (resultIsNotEmpty) {
-            System.out.print(print);
-
-            if (validate.containsOnlyLetters(returnValue) && validate.belowCharLimit(returnValue, WORD_LIMIT)) {
-                Map<String, Object> namedParameter = new HashMap<String, Object>();
-
-//                String parameter = HDBRetrieveManager.getNamedParameters(query).get(0);
-//                namedParameter.put(parameter, returnValue);
-
-//                resultIsNotEmpty = !fromDatabase.resultIsEmpty(query, namedParameter);
-                if (resultIsNotEmpty){
-                    System.out.println("Data already exists!");
-                }
-            }
-        }
-
-        return returnValue.toLowerCase();
     }
 
 }

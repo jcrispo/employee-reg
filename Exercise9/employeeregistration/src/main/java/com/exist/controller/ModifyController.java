@@ -11,27 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * Created by jcrispo on 10/1/14.
- */
 public class ModifyController implements Controller {
     EmployeeDAOImpl employeeDAO;
     QueryManager queryManager;
     EmployeeDataValidation employeeDataValidation;
+    private static final int EMPTY = 1;
 
     @Override
-    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView returnValue = new ModelAndView("modify");
 
         try {
             Integer id = employeeDataValidation.number(request.getParameter("id"));
+
+            String hqlQuery;
             String condition = " WHERE E.id = " + id.toString();
 
-            String hqlQuery = queryManager.getQuery("SELECT_ALL_JOIN_ALL") + condition;
+            hqlQuery = queryManager.getQuery("SELECT_ALL_JOIN_ALL") + condition;
 
             List<Object[]> employeeData = employeeDAO.getEmployeeData(hqlQuery, 0, 1);
 
-            if (employeeData.size()==1) {
+            if (employeeData.size()==EMPTY) {
                 return new ModelAndView("modifyPage", "message", "Employee ID does not exist.");
             }
 
@@ -39,18 +39,18 @@ public class ModifyController implements Controller {
 
             employeeData.add(0,labels);
 
-            returnValue.addObject("id", id);
-            returnValue.addObject("employeeData", employeeData);
-
             hqlQuery = queryManager.getQuery("S_ALL_Positions_ORDER_Position");
+
             List<Object[]> positionData = employeeDAO.getEmployeeData(hqlQuery , 0, 0);
 
-            if (positionData.size()==1) {
+            if (positionData.size()==EMPTY) {
                 return new ModelAndView("modifyPage", "message", "Position List is Empty.");
             }
 
             positionData.remove(positionData.size()-1);
 
+            returnValue.addObject("id", id);
+            returnValue.addObject("employeeData", employeeData);
             returnValue.addObject("positionData", positionData);
         } catch (InvalidInputException e) {
             e.printStackTrace();

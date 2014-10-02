@@ -10,9 +10,6 @@ public class ViewPageController implements Controller {
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView returnValue = new ModelAndView("viewPage");
-
-
-        return returnValue;
+        return new ModelAndView("viewPage");
     }
 }

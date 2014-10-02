@@ -12,6 +12,7 @@ import java.util.List;
 public class RegisterEmployeePageController implements Controller {
     private EmployeeDAO employeeDAO;
     private QueryManager queryManager;
+    private static final int EMPTY = 1;
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -21,7 +22,7 @@ public class RegisterEmployeePageController implements Controller {
 
         List<Object[]> positionData = employeeDAO.getEmployeeData(hqlQuery , 0, 0);
 
-        if (positionData.size()==1) {
+        if (positionData.size()==EMPTY) {
             return new ModelAndView("result", "message", "Position List is Empty.");
         }
 

@@ -3,10 +3,8 @@ package com.exist.dao;
 import com.exist.dao.utility.EmployeeDAO;
 import com.exist.dao.utility.PopulateDatabase;
 import com.exist.models.CompanyEmployeeData;
-import com.exist.models.Department;
 import com.exist.models.Employee;
 import com.exist.models.Person;
-import com.exist.models.Position;
 import org.hibernate.*;
 
 import java.util.ArrayList;
@@ -16,16 +14,14 @@ import java.util.Map;
 public class EmployeeDAOImpl implements EmployeeDAO{
     private SessionFactory sessionFactory;
     private PopulateDatabase populateDatabase;
-    private List<Object[]> employeeData;
-    private Employee employee;
 
     public EmployeeDAOImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
-    public List<Object[]> getEmployeeData(String hqlQuery, int beginIndex, int maxResult) {
-        List<Object[]> retVal = new ArrayList<Object[]>();
+    public List<Object[]> getEmployeeData(String hqlQuery, int beginIndex, int maxResult) throws HibernateException {
+        List<Object[]> returnValue = new ArrayList<Object[]>();
 
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
@@ -37,26 +33,25 @@ public class EmployeeDAOImpl implements EmployeeDAO{
             query.setFirstResult(beginIndex);
             query.setMaxResults(maxResult);
 
-            retVal = query.list();
+            returnValue = query.list();
 
-            retVal.add(query.getReturnAliases());
+            returnValue.add(query.getReturnAliases());
 
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
+            throw e;
         } finally {
             if (session != null) {
                 session.close();
             }
         }
 
-        return retVal;
+        return returnValue;
     }
 
     @Override
     public void setEmployee(Employee employee) throws HibernateException {
-        this.employee = employee;
-
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
 
@@ -152,11 +147,6 @@ public class EmployeeDAOImpl implements EmployeeDAO{
         populateDatabase.populateDepartments();
         populateDatabase.populatePositions();
         populateDatabase.populateEmployeeData();
-    }
-
-    public Employee getEmployee() {
-        System.out.println(employee.toString());
-        return employee;
     }
 
     public void setPopulateDatabase(PopulateDatabase populateDatabase) {

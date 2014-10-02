@@ -33,6 +33,28 @@
         <input type="hidden" name="sortBy" value="${sortBy}"/>
         <input type="hidden" name="sort" value="${sort}"/>
     </form>
+    <table style="width: 50%" align="center">
+        <tr>
+            <td>
+                <center>Edit Employee Data</center>
+            </td>
+        </tr>
+    </table>
+    <form method="POST" action="/modify.html">
+        <table style="width: 50%" align="center">
+            <tr>
+                <td>
+                    Enter Employee ID:
+                </td>
+                <td><center>
+                    <input type="text" name="id"/>
+                    <input type="submit" value="Submit"/>
+                </center>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br/>
     <a href="/viewPage.html">Back</a><br/>
     <a href="http://localhost:8080" >Back to Index</a>
 </center>

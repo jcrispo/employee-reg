@@ -3,9 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="/register.html" class="com.exist.controller.RegisterController">
-        <property name="employeeDAO" ref="dao"/>
-    </bean>
+    <bean name="/register.html" class="com.exist.controller.RegisterController"/>
     <bean name="/registerEmployeePage.html" class="com.exist.controller.RegisterEmployeePageController">
         <property name="employeeDAO" ref="dao"/>
         <property name="queryManager" ref="queryManager"/>
@@ -43,6 +41,7 @@
     <bean name="/delete.html" class="com.exist.controller.DeleteController">
         <property name="employeeDAO" ref="dao"/>
         <property name="queryManager" ref="queryManager"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
     </bean>
 
     <bean name="dao" class="com.exist.dao.EmployeeDAOImpl">

@@ -1,7 +1,10 @@
 package com.exist.controller;
 
 import com.exist.dao.EmployeeDAOImpl;
+import com.exist.services.EmployeeDataValidation;
 import com.exist.services.QueryManager;
+import com.exist.services.utilities.InvalidInputException;
+import org.hibernate.HibernateException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -11,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DeleteController implements Controller {
+    EmployeeDataValidation employeeDataValidation;
     EmployeeDAOImpl employeeDAO;
     QueryManager queryManager;
 
@@ -18,14 +22,25 @@ public class DeleteController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView returnValue = new ModelAndView("result");
 
-        Map<String, Object> namedParameter = new HashMap<String, Object>();
+        String message;
 
-        namedParameter.put(":id", Integer.valueOf(request.getParameter("id")));
-        String hqlQuery = queryManager.getQuery("DEL_Employee_WHERE_ID");
+        try {
+            Integer id = employeeDataValidation.number(request.getParameter("id"));
 
-        employeeDAO.modifyEmployeeData(hqlQuery, namedParameter);
+            Map<String, Object> namedParameter = new HashMap<String, Object>();
+            String hqlQuery = queryManager.getQuery("DEL_Employee_WHERE_ID");
 
-        String message = "Employee Data Deleted.";
+            message = "Employee Data Deleted.";
+
+            namedParameter.put(":id", id);
+
+            employeeDAO.modifyEmployeeData(hqlQuery, namedParameter);
+        } catch (InvalidInputException e) {
+            message = e.toString();
+        } catch (HibernateException e) {
+            message = e.toString();
+            e.printStackTrace();
+        }
 
         returnValue.addObject("message", message);
 
@@ -38,5 +53,9 @@ public class DeleteController implements Controller {
 
     public void setQueryManager(QueryManager queryManager) {
         this.queryManager = queryManager;
+    }
+
+    public void setEmployeeDataValidation(EmployeeDataValidation employeeDataValidation) {
+        this.employeeDataValidation = employeeDataValidation;
     }
 }

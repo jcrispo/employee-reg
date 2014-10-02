@@ -13,7 +13,7 @@ public class PopulateDBController implements Controller {
 
     @Override
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String message = new String();
+        String message;
 
         try {
             employeeDAO.populateDB();
