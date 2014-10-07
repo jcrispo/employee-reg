@@ -3,48 +3,45 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="/register.html" class="com.exist.controller.RegisterController"/>
     <bean name="/registerEmployeePage.html" class="com.exist.controller.RegisterEmployeePageController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="queryManager" ref="queryManager"/>
     </bean>
     <bean name="/registerEmployee.html" class="com.exist.controller.RegisterEmployeeController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
         <property name="queryManager" ref="queryManager"/>
         <property name="employee" ref="employee"/>
     </bean>
     <bean name="/populateDb.html" class="com.exist.controller.PopulateDBController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
     </bean>
-    <bean name="/viewPage.html" class="com.exist.controller.ViewPageController"/>
     <bean name="/view.html" class="com.exist.controller.ViewController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="queryManager" ref="queryManager"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
     </bean>
-    <bean name="/modifyPage.html" class="com.exist.controller.ModifyPageController"/>
     <bean name="/modify.html" class="com.exist.controller.ModifyController">
         <property name="queryManager" ref="queryManager"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
     </bean>
     <bean name="/edit.html" class="com.exist.controller.EditController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="queryManager" ref="queryManager"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
     </bean>
     <bean name="/editPosition.html" class="com.exist.controller.EditPositionController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="queryManager" ref="queryManager"/>
     </bean>
     <bean name="/delete.html" class="com.exist.controller.DeleteController">
-        <property name="employeeDAO" ref="dao"/>
+        <property name="employeeDAO" ref="employeeDAO"/>
         <property name="queryManager" ref="queryManager"/>
         <property name="employeeDataValidation" ref="employeeDataValidation"/>
     </bean>
 
-    <bean name="dao" class="com.exist.dao.EmployeeDAOImpl">
+    <bean name="employeeDAO" class="com.exist.dao.EmployeeDAOImpl">
         <constructor-arg name="sessionFactory" ref="sessionFactory"/>
         <property name="populateDatabase" ref="populateDatabase"/>
     </bean>
@@ -56,6 +53,16 @@
         <constructor-arg name="validate" ref="validate"/>
     </bean>
 
+    <bean name="/redirectToRegister.html" class="com.exist.controller.RedirectController">
+        <property name="viewName" value="register"/>
+    </bean>
+    <bean name="/redirectToView.html" class="com.exist.controller.RedirectController">
+        <property name="viewName" value="view"/>
+    </bean>
+    <bean name="/redirectToModify.html" class="com.exist.controller.RedirectController">
+        <property name="viewName" value="modifyPage"/>
+    </bean>
+
     <bean name="employee" class="com.exist.models.Employee"/>
     <bean name="person" class="com.exist.models.Person"/>
     <bean name="companyEmployeeData" class="com.exist.models.CompanyEmployeeData"/>
@@ -63,6 +70,10 @@
     <bean name="department" class="com.exist.models.Department"/>
     <bean name="validate" class="com.exist.services.InputValidation"/>
     <bean name="queryManager" class="com.exist.services.QueryManager"/>
+    <bean name="registerEmployee" class="com.exist.services.utilities.RegisterEmployee">
+        <property name="employeeDAOImpl" ref="employeeDAO"/>
+        <property name="employeeDataValidation" ref="employeeDataValidation"/>
+    </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>

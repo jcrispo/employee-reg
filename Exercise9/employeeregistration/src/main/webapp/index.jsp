@@ -13,9 +13,9 @@
     <tr><td><br/><center>Employee Registration Web Application</center><br/></td></tr>
 </table>
 <table style="width: 50%" align="center">
-    <tr><td><a href="/register.html"><center>Register New Data</center></a>
-    </td><td><a href="/viewPage.html"><center>View Data</center></a>
-    </td><td><a href="/modifyPage.html"><center>Modify Data</center></a>
+    <tr><td><a href="/redirectToRegister.html"><center>Register New Data</center></a>
+    </td><td><a href="/redirectToView.html"><center>View Data</center></a>
+    </td><td><a href="/redirectToModify.html.html"><center>Modify Data</center></a>
     </td></tr>
 </table>
 </body>
