@@ -57,7 +57,7 @@
         <property name="viewName" value="register"/>
     </bean>
     <bean name="/redirectToView.html" class="com.exist.controller.RedirectController">
-        <property name="viewName" value="view"/>
+        <property name="viewName" value="viewPage"/>
     </bean>
     <bean name="/redirectToModify.html" class="com.exist.controller.RedirectController">
         <property name="viewName" value="modifyPage"/>
@@ -70,10 +70,10 @@
     <bean name="department" class="com.exist.models.Department"/>
     <bean name="validate" class="com.exist.services.InputValidation"/>
     <bean name="queryManager" class="com.exist.services.QueryManager"/>
-    <bean name="registerEmployee" class="com.exist.services.utilities.RegisterEmployee">
-        <property name="employeeDAOImpl" ref="employeeDAO"/>
-        <property name="employeeDataValidation" ref="employeeDataValidation"/>
-    </bean>
+    <!--<bean name="registerEmployee" class="com.exist.services.utilities.RegisterEmployee">-->
+        <!--<property name="employeeDAOImpl" ref="employeeDAO"/>-->
+        <!--<property name="employeeDataValidation" ref="employeeDataValidation"/>-->
+    <!--</bean>-->
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>

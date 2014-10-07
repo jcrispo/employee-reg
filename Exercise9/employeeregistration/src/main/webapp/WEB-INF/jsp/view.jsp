@@ -55,7 +55,7 @@
         </table>
     </form>
     <br/>
-    <a href="/viewPage.html">Back</a><br/>
+    <a href="/redirectToView.html">Back</a><br/>
     <a href="http://localhost:8080" >Back to Index</a>
 </center>
 </body>
