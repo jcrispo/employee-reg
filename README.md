@@ -16,6 +16,3 @@ Fuctions include:
     b. Viewing list of employees and their information, which may be sorted by First Name, Last Name, Age, Position, and ID Number in Ascending or Descending order.
     c. Editing employee data
     d. Deleting employee data
-
-
---testing git GPG signature
